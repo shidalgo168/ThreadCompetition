@@ -9,7 +9,7 @@ package theadcompetition;
  *
  * @author Sergio Hidalgo
  */
-public class TheadCompetition {
+public class ThreadCompetition {
 
     /**
      * @param args the command line arguments
