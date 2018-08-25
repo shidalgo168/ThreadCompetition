@@ -8,6 +8,8 @@ package threadcompetition;
 import java.awt.Color;
 import java.awt.Graphics;
 import java.awt.Image;
+import java.io.FileInputStream;
+import java.util.ArrayList;
 
 /**
  *
@@ -24,6 +26,7 @@ public class ThreadFigure extends Thread{
     private float barrierLimit;
     private Color figureColor;
     private Image image;
+    private ArrayList<Image> sprite;
     private boolean running;
     
     public ThreadFigure(float pXPos, float pYPos, SpeedEnum pSpeedType, float pFinishLimit, float pBarrierLimit) {   
@@ -32,11 +35,17 @@ public class ThreadFigure extends Thread{
         this.speed = pSpeedType;
         this.finishLimit = pFinishLimit;
         this.barrierLimit = pBarrierLimit;
+        this.sprite = new ArrayList<Image>();
         this.running = true;
+        
+        sprite.add(new Image(new FileInputStream("src/Assets/blue_car.png")));
+        sprite.add(new Image(new FileInputStream("src/Assets/red_car.png")));
+        sprite.add(new Image(new FileInputStream("src/Assets/green_car.png")));
         
         switch(speed.getValue()){
             case (1): 
                 this.figureColor = new Color(232,28,24);
+                
                 break;
             case (2): 
                 this.figureColor = new Color(255,253,29);
@@ -46,10 +55,21 @@ public class ThreadFigure extends Thread{
                 break;
         }
     }
+    
 
     public SpeedEnum getSpeed() {
         return speed;
     }
+
+    public Image getImage() {
+        return image;
+    }
+
+    public void setImage(Image image) {
+        this.image = image;
+    }
+    
+    
 
     public void setSpeed(SpeedEnum speed) {
         this.speed = speed;
