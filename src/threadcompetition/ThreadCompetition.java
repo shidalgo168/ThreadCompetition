@@ -4,7 +4,8 @@
  * and open the template in the editor.
  */
 package threadcompetition;
-
+import java.io.IOException;
+import javax.swing.SwingUtilities;
 /**
  *
  * @author Sergio Hidalgo
@@ -14,8 +15,8 @@ public class ThreadCompetition {
     /**
      * @param args the command line arguments
      */
-    public static void main(String[] args) {
-        // TODO code application logic here
+    public static void main(String[] args) throws IOException {
+        SwingUtilities.invokeLater(new InitInterfaceAndThreads());
     }
     
 }

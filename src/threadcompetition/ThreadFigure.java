@@ -5,10 +5,9 @@
  */
 package threadcompetition;
 
-import java.awt.Color;
 import java.awt.Graphics;
 import java.awt.Image;
-import java.io.FileInputStream;
+import java.awt.image.ImageObserver;
 import java.io.FileNotFoundException;
 import java.io.IOException;
 import java.util.ArrayList;
@@ -19,18 +18,15 @@ import javax.imageio.ImageIO;
  * @author Sergio Hidalgo
  */
 public class ThreadFigure extends Thread{
-    private final int size = 50;
-    private final int initialAngle = 0;
-    private final int endOfAngle = 70;
+    private final int height = 70;
+    private final int width = 34;
     private SpeedEnum speed;
     private float xPosition;
     private float yPosition;
     private float finishLimit;
     private float barrierLimit;
-    private Color figureColor;
     private Image image;
     private ArrayList<Image> sprite;
-    private boolean running;
     
     public ThreadFigure(float pXPos, float pYPos, SpeedEnum pSpeedType, float pFinishLimit, float pBarrierLimit) throws FileNotFoundException, IOException {   
         this.xPosition = pXPos;
@@ -38,26 +34,24 @@ public class ThreadFigure extends Thread{
         this.speed = pSpeedType;
         this.finishLimit = pFinishLimit;
         this.barrierLimit = pBarrierLimit;
-        this.sprite = new ArrayList<Image>();
-        this.running = true;
+        this.sprite = new ArrayList<>();
         
-        sprite.add(ImageIO.read(getClass().getResource("src/Assets/blue_car.jpg")));
-        sprite.add(ImageIO.read(getClass().getResource("src/Assets/red_car.jpg")));
-        sprite.add(ImageIO.read(getClass().getResource("src/Assets/green_car.jpg")));
-        
+        this.sprite.add(ImageIO.read(getClass().getResource("/Assets/blue_car.jpg")));
+        this.sprite.add(ImageIO.read(getClass().getResource("/Assets/red_car.jpg")));
+        this.sprite.add(ImageIO.read(getClass().getResource("/Assets/green_car.jpg")));
         
         switch(speed.getValue()){
             case (1): 
-                this.figureColor = new Color(232,28,24);
-                
+                this.image = sprite.get(1);
                 break;
             case (2): 
-                this.figureColor = new Color(255,253,29);
+                this.image = sprite.get(2);
                 break;
             case (3): 
-                this.figureColor = new Color(36,232,64);
+                this.image = sprite.get(3);
                 break;
         }
+        
     }
     
 
@@ -103,73 +97,70 @@ public class ThreadFigure extends Thread{
         this.finishLimit = finishLimit;
     }
 
-    public void move(int direction) {
+    public boolean move(int direction) {
         float limit;
-        yPosition += (size * direction);
+        yPosition += (height * direction);
         
         if(direction == 1){
-            limit = finishLimit - size;
+            limit = finishLimit - height;
             if(yPosition > limit){
                 //La figura llego al final del camino
-                running = false;
+                return false;
             }
         }
         else {
             if(yPosition < finishLimit){
                 //La figura llego al final del camino
-                running = false;
+                return false;
             }
-        }    
+        }
+        return true;
     }
     
-    public void move(int direction, boolean barrier){
+    public boolean move(int direction, boolean barrier){
         float limit;
         if(direction == 1){
-            limit = barrierLimit - size;
+            limit = barrierLimit - height;
             if(yPosition > limit){ //la figura se encuentra despues de la barrera
-                yPosition += size;
-                limit = finishLimit - size;
+                yPosition += height;
+                limit = finishLimit - height;
                 if(yPosition > limit){
                     //La figura llego al final del camino
-                    running = false;
+                    return false;
                 }
             }
             else{
-                if((yPosition+size) < limit){
-                    yPosition += size;
+                if((yPosition+height) < limit){
+                    yPosition += height;
                 }
             }
         }
         else {
             limit = barrierLimit;
             if(yPosition < limit){ //la figura se encuentra despues de la barrera
-                yPosition -= size;
+                yPosition -= height;
                 if(yPosition < finishLimit){
                     //La figura llego al final del camino
-                    running = false;
+                    return false;
                 }
             }
             else {
-                if((yPosition-size) > limit){
-                    yPosition -= size;
+                if((yPosition-height) > limit){
+                    yPosition -= height;
                 }
             }
         }
+        return true;
     }
 
     public void draw(Graphics g) {
-        g.setColor(this.figureColor);
-        switch(speed.getValue()){
-            case (1): 
-                g.fillRect((int) xPosition, (int) yPosition, size, size);
-                break;
-            case (2): 
-                g.fillOval((int) xPosition, (int) yPosition, size, size);
-                break;
-            case (3): 
-                g.fillArc((int) xPosition, (int) yPosition, size, size, initialAngle, endOfAngle);
-                break;
-        }
+        /*ImageObserver obvserver = new ImageObserver() {
+            @Override
+            public boolean imageUpdate(Image img, int infoflags, int x, int y, int width, int height) {
+                throw new UnsupportedOperationException("Not supported yet."); //To change body of generated methods, choose Tools | Templates.
+            }
+        }*/
+        g.drawImage(image,(int) xPosition,(int) yPosition, null);
         
     }
     
