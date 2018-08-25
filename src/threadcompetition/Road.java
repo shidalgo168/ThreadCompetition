@@ -5,6 +5,8 @@
  */
 package threadcompetition;
 
+import java.awt.Color;
+import java.awt.Graphics;
 import java.util.ArrayList;
 
 /**
@@ -18,7 +20,7 @@ public class Road {
     private float height;
     private int direction;
     private boolean barrier;
-    private ArrayList<ThreadFigure> figureList;
+    private ArrayList<MoveThreadFigure> figureList;
     
     public Road(float pXPosition, float pYPosition, float pWidth, float pHeight){
         this.xPosition = pXPosition;
@@ -73,20 +75,50 @@ public class Road {
     public void changeBarrierStatus(){
         this.barrier = !this.barrier;
     }
+
+    public boolean isBarrier() {
+        return barrier;
+    }
+
+    public void setBarrier(boolean barrier) {
+        this.barrier = barrier;
+    }
+
+    public ArrayList<MoveThreadFigure> getFigureList() {
+        return figureList;
+    }
+
+    public void setFigureList(ArrayList<MoveThreadFigure> figureList) {
+        this.figureList = figureList;
+    }
+    
+    
     
     public void reversePath(){
         if(this.direction == 1){
             setDirection(-1);
             figureList.forEach((currentFigure) -> {
-                currentFigure.setFinishLimit(0);
+                currentFigure.getMyObject().setFinishLimit(0);
             });
         }
         else {
             setDirection(1);
             figureList.forEach((currentFigure) -> {
-                currentFigure.setFinishLimit(height);
+                currentFigure.getMyObject().setFinishLimit(height);
             });
         }
+    }
+    
+    public void draw(Graphics g){
+        g.setColor(new Color(255,255,255));
+        g.fillRect((int)xPosition, (int)yPosition,(int) width,(int) height);
+        g.setColor(new Color(33,33,33));
+        g.fillRect((int)xPosition+3, (int)yPosition+3,(int) width-4,(int) height-3);
+        figureList.forEach((MoveThreadFigure currentFigure) -> {
+               
+                currentFigure.getMyObject().draw(g);
+            });
+        
     }
     
 }

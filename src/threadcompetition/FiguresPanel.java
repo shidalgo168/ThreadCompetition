@@ -8,6 +8,7 @@ package threadcompetition;
 import java.awt.Color;
 import java.awt.Dimension;
 import java.awt.Graphics;
+import java.util.ArrayList;
 
 import javax.swing.JPanel;
 /**
@@ -17,10 +18,9 @@ import javax.swing.JPanel;
 public class FiguresPanel extends JPanel {
     private static final long serialVersionUID = -6291233936414618049L;
 
-    private ThreadFigure[] gameObjectsArray;
+    private ArrayList<Road> gameObjectsArray = new ArrayList<>();
 
-    public FiguresPanel(ThreadFigure[] gameObjectsArray, int width) {
-        this.gameObjectsArray = gameObjectsArray;
+    public FiguresPanel(int width) {
         setPreferredSize(new Dimension(width, width));
     }
 
@@ -29,9 +29,17 @@ public class FiguresPanel extends JPanel {
         super.paintComponent(g);
 
         g.setColor(Color.WHITE);
-
-        for (int i = 0; i < gameObjectsArray.length; i++) {
-            gameObjectsArray[i].draw(g);
+        
+        for (int i = 0; i < gameObjectsArray.size(); i++) {
+            gameObjectsArray.get(i).draw(g);
         }
+    }
+    
+    public void updateFigures (ArrayList<Road> pRoadList) {
+        this.gameObjectsArray.clear();
+        pRoadList.forEach((Road currentRoad) -> {
+            this.gameObjectsArray.add(currentRoad);
+            });
+        
     }
 }

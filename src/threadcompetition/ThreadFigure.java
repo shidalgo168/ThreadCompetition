@@ -18,8 +18,8 @@ import javax.imageio.ImageIO;
  * @author Sergio Hidalgo
  */
 public class ThreadFigure extends Thread{
-    private final int height = 70;
-    private final int width = 34;
+    private final int height = 45;
+    private final int width = 25;
     private SpeedEnum speed;
     private float xPosition;
     private float yPosition;
@@ -51,10 +51,8 @@ public class ThreadFigure extends Thread{
                 this.image = sprite.get(3);
                 break;
         }
-        
     }
     
-
     public SpeedEnum getSpeed() {
         return speed;
     }
@@ -66,8 +64,6 @@ public class ThreadFigure extends Thread{
     public void setImage(Image image) {
         this.image = image;
     }
-    
-    
 
     public void setSpeed(SpeedEnum speed) {
         this.speed = speed;

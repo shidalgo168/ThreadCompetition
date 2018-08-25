@@ -53,20 +53,63 @@ public class MoveThreadFigure implements Runnable{
                 //System.out.println("Thread name: " + this.name);
                 Thread.sleep(this.sleepTime);
                 if(barrier){
-                    myObject.move(direction, barrier);
+                    if(!myObject.move(direction, barrier)){
+                        running = false;
+                        this.finalize();
+                    }
                 }
                 else{
-                    myObject.move(direction);
+                    if(!myObject.move(direction)){
+                        running = false;
+                        this.finalize();
+                    }
                 }
                 
             } catch (InterruptedException ex) {
                 Logger.getLogger(MoveThreadFigure.class.getName()).log(Level.SEVERE, null, ex);
+            } catch (Throwable ex) {
+                Logger.getLogger(MoveThreadFigure.class.getName()).log(Level.SEVERE, null, ex);
             }
             
         }//end while
+        
     }
     
     public synchronized void setRunning(boolean running) {
         this.running = running;
     }
+
+    public ThreadFigure getMyObject() {
+        return myObject;
+    }
+
+    public void setMyObject(ThreadFigure myObject) {
+        this.myObject = myObject;
+    }
+
+    public int getSleepTime() {
+        return sleepTime;
+    }
+
+    public void setSleepTime(int sleepTime) {
+        this.sleepTime = sleepTime;
+    }
+
+    public int getDirection() {
+        return direction;
+    }
+
+    public void setDirection(int direction) {
+        this.direction = direction;
+    }
+
+    public boolean isBarrier() {
+        return barrier;
+    }
+
+    public void setBarrier(boolean barrier) {
+        this.barrier = barrier;
+    }
+    
+    
 }

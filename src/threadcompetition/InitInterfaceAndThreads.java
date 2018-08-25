@@ -22,11 +22,11 @@ import javax.swing.JFrame;
 
 public class InitInterfaceAndThreads implements Runnable {
     private static final int DRAWING_WIDTH = 700;
-    private static final int NUMGAMEOBJECTS = 20;
+    private static final int ROADS_COUNT = 5;
+    private static final int ROAD_WIDTH = 30;
     private boolean runningThread;
     
-    private ThreadFigure[] gameObjectsArray = new ThreadFigure[NUMGAMEOBJECTS];
-    private MoveThreadFigure[] moveObjectArray = new MoveThreadFigure[NUMGAMEOBJECTS];
+    private ArrayList<Road> roadObjectArray = new ArrayList<>();
 
     private JFrame frame;
     private FiguresPanel movingPanel;
@@ -40,14 +40,8 @@ public class InitInterfaceAndThreads implements Runnable {
         this.sleepTimePaint = 20;
         this.runningThread = true;
         
-        for (int i = 0; i < gameObjectsArray.length; i++) {
-            
-            gameObjectsArray[i] = new ThreadFigure(0,0, SpeedEnum.Slow, 710, 350);
-            moveObjectArray[i] = new MoveThreadFigure(gameObjectsArray[i],
-                                                    gameObjectsArray[i].getSpeed(), 
-                                                    "Thread " + i,
-                                                    this.runningThread,
-                                                    1, false);
+        for (int i = 0; i < ROADS_COUNT; i++) {
+           roadObjectArray.add( new Road(ROAD_WIDTH*i, 10, ROAD_WIDTH, DRAWING_WIDTH));
         }//end for
     }
 
@@ -63,7 +57,8 @@ public class InitInterfaceAndThreads implements Runnable {
             }
         });
 
-        movingPanel = new FiguresPanel(gameObjectsArray, DRAWING_WIDTH);
+        movingPanel = new FiguresPanel(DRAWING_WIDTH);
+        movingPanel.updateFigures(roadObjectArray);
         frame.add(movingPanel);
 
         frame.pack();
@@ -71,9 +66,12 @@ public class InitInterfaceAndThreads implements Runnable {
         frame.setVisible(true);
 
         //START THREADS
-        for (MoveThreadFigure myCurrentThread : moveObjectArray) {
-            new Thread(myCurrentThread).start();
-        } //end for
+        roadObjectArray.forEach((currentRoad) -> {
+            currentRoad.getFigureList().forEach((moveThread) -> {
+                new Thread(moveThread).start();
+            });
+        }); //end for
+            
         panelRepaint = new PanelRepaint(this, this.sleepTimePaint, this.runningThread);
         new Thread(panelRepaint).start();
     }
