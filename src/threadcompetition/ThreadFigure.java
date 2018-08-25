@@ -9,7 +9,10 @@ import java.awt.Color;
 import java.awt.Graphics;
 import java.awt.Image;
 import java.io.FileInputStream;
+import java.io.FileNotFoundException;
+import java.io.IOException;
 import java.util.ArrayList;
+import javax.imageio.ImageIO;
 
 /**
  *
@@ -29,7 +32,7 @@ public class ThreadFigure extends Thread{
     private ArrayList<Image> sprite;
     private boolean running;
     
-    public ThreadFigure(float pXPos, float pYPos, SpeedEnum pSpeedType, float pFinishLimit, float pBarrierLimit) {   
+    public ThreadFigure(float pXPos, float pYPos, SpeedEnum pSpeedType, float pFinishLimit, float pBarrierLimit) throws FileNotFoundException, IOException {   
         this.xPosition = pXPos;
         this.yPosition = pYPos;
         this.speed = pSpeedType;
@@ -38,9 +41,10 @@ public class ThreadFigure extends Thread{
         this.sprite = new ArrayList<Image>();
         this.running = true;
         
-        sprite.add(new Image(new FileInputStream("src/Assets/blue_car.png")));
-        sprite.add(new Image(new FileInputStream("src/Assets/red_car.png")));
-        sprite.add(new Image(new FileInputStream("src/Assets/green_car.png")));
+        sprite.add(ImageIO.read(getClass().getResource("src/Assets/blue_car.jpg")));
+        sprite.add(ImageIO.read(getClass().getResource("src/Assets/red_car.jpg")));
+        sprite.add(ImageIO.read(getClass().getResource("src/Assets/green_car.jpg")));
+        
         
         switch(speed.getValue()){
             case (1): 
