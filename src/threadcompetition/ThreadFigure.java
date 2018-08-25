@@ -7,12 +7,13 @@ package threadcompetition;
 
 import java.awt.Color;
 import java.awt.Graphics;
+import java.awt.Image;
 
 /**
  *
  * @author Sergio Hidalgo
  */
-public class ThreadFigure {
+public class ThreadFigure extends Thread{
     private final int size = 50;
     private final int initialAngle = 0;
     private final int endOfAngle = 70;
@@ -22,6 +23,7 @@ public class ThreadFigure {
     private float finishLimit;
     private float barrierLimit;
     private Color figureColor;
+    private Image image;
     private boolean running;
     
     public ThreadFigure(float pXPos, float pYPos, SpeedEnum pSpeedType, float pFinishLimit, float pBarrierLimit) {   
