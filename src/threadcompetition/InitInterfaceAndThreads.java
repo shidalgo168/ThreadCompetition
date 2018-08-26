@@ -110,12 +110,31 @@ public class InitInterfaceAndThreads implements Runnable {
             float roadHeight = this.getRoadObjectArray().get(freeRoadPos).getHeight();
             
             ThreadFigure tf = new ThreadFigure(roadXPos, roadYPos, SpeedEnum.Slow, roadHeight,roadHeight/2);
+            MoveThreadFigure mf = new MoveThreadFigure(tf, SpeedEnum.Slow, pName, runningThread, speedSelection, runningThread);
             //TODO add to road
-            //this.getRoadObjectArray().get(freeRoadPos).getFigureList().;
+            this.getRoadObjectArray().get(freeRoadPos).getFigureList().add(mf);
             
         }
     }
 
+    public void randomGenerator(int figureQty) throws IOException{
+        int figureFlag = 0;
+        int freeRoadPos = 0;
+        
+        
+        while(figureFlag<figureQty){
+            freeRoadPos = selectRoad(this.getRoadObjectArray());
+            float roadXPos = this.getRoadObjectArray().get(freeRoadPos).getxPosition();
+            float roadYPos = this.getRoadObjectArray().get(freeRoadPos).getyPosition();
+            float roadHeight = this.getRoadObjectArray().get(freeRoadPos).getHeight();
+            
+            ThreadFigure tf = new ThreadFigure(roadXPos, roadYPos, SpeedEnum.getRandomSpeed(), roadHeight,roadHeight/2);
+            MoveThreadFigure mf = new MoveThreadFigure(tf, SpeedEnum.Slow, pName, runningThread, speedSelection, runningThread);
+            //TODO add to road
+            this.getRoadObjectArray().get(freeRoadPos).getFigureList().add(mf);
+            
+        }
+    }
     
     public int selectRoad(ArrayList<Road> roads){
         Road freeRoad = roads.get(0);

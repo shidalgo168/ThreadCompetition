@@ -5,6 +5,8 @@
  */
 package threadcompetition;
 
+import java.util.Random;
+
 /**
  *
  * @author Sergio Hidalgo
@@ -19,4 +21,9 @@ public enum SpeedEnum {
     public int getValue(){
         return value;
     }
+    
+    public static SpeedEnum getRandomSpeed() {
+            Random random = new Random();
+            return values()[random.nextInt(values().length)];
+        }
 }
