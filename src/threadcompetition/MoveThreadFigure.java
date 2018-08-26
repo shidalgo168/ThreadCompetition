@@ -19,14 +19,12 @@ public class MoveThreadFigure implements Runnable{
     
     private ThreadFigure myObject;
     private int sleepTime;
-    private String name;
     private int direction;
     private boolean barrier;
     
-    public MoveThreadFigure(ThreadFigure pObj, SpeedEnum pSpeed, String pName, boolean pRunning, int pDirection, boolean pBarrier){
+    public MoveThreadFigure(ThreadFigure pObj, SpeedEnum pSpeed, boolean pRunning, int pDirection, boolean pBarrier){
         this.myObject = pObj;
         this.running = pRunning;
-        this.name = pName;
         this.direction = pDirection;
         this.barrier = pBarrier;
         

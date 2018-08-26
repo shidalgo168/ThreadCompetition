@@ -31,6 +31,8 @@ public class InitInterfaceAndThreads implements Runnable {
     private JFrame frame;
     private FiguresPanel movingPanel;
     private PanelRepaint panelRepaint;
+    private int currentDirection;
+    private boolean currentBarrier;
     private int sleepThreadTime;
     private int sleepTimePaint;
     
@@ -40,6 +42,8 @@ public class InitInterfaceAndThreads implements Runnable {
     public InitInterfaceAndThreads() throws IOException {
         this.sleepThreadTime = 10;
         this.sleepTimePaint = 20;
+        this.currentDirection = 1;
+        this.currentBarrier = false;
         this.runningThread = true;
         
         for (int i = 0; i < ROADS_COUNT; i++) {
@@ -98,7 +102,7 @@ public class InitInterfaceAndThreads implements Runnable {
         movingPanel.repaint();
     }
     
-    public void paramGenerator(int figureQty, int speedSelection) throws IOException{
+    public void paramGenerator(int figureQty, SpeedEnum speedSelection) throws IOException{
         int figureFlag = 0;
         int freeRoadPos = 0;
         
@@ -109,10 +113,13 @@ public class InitInterfaceAndThreads implements Runnable {
             float roadYPos = this.getRoadObjectArray().get(freeRoadPos).getyPosition();
             float roadHeight = this.getRoadObjectArray().get(freeRoadPos).getHeight();
             
-            ThreadFigure tf = new ThreadFigure(roadXPos, roadYPos, SpeedEnum.Slow, roadHeight,roadHeight/2);
-            MoveThreadFigure mf = new MoveThreadFigure(tf, SpeedEnum.Slow, pName, runningThread, speedSelection, runningThread);
+
+            ThreadFigure tf = new ThreadFigure(roadXPos, roadYPos, speedSelection, roadHeight,roadHeight/2);
+            MoveThreadFigure newMoveThread = new MoveThreadFigure(tf, speedSelection, true, currentDirection, currentBarrier);
             //TODO add to road
-            this.getRoadObjectArray().get(freeRoadPos).getFigureList().add(mf);
+            //this.getRoadObjectArray().get(freeRoadPos).getFigureList().;
+            // new Thread(this.getRoadObjectArray().getLast()).start();
+            
             
         }
     }
@@ -129,7 +136,7 @@ public class InitInterfaceAndThreads implements Runnable {
             float roadHeight = this.getRoadObjectArray().get(freeRoadPos).getHeight();
             
             ThreadFigure tf = new ThreadFigure(roadXPos, roadYPos, SpeedEnum.getRandomSpeed(), roadHeight,roadHeight/2);
-            MoveThreadFigure mf = new MoveThreadFigure(tf, SpeedEnum.Slow, pName, runningThread, speedSelection, runningThread);
+            MoveThreadFigure newMoveThread = new MoveThreadFigure(tf, speedSelection, true, currentDirection, currentBarrier);
             //TODO add to road
             this.getRoadObjectArray().get(freeRoadPos).getFigureList().add(mf);
             
