@@ -98,20 +98,24 @@ public class InitInterfaceAndThreads implements Runnable {
         movingPanel.repaint();
     }
     
-    public void paramGenerator(int figureQty, int speedSelection){
+    public void paramGenerator(int figureQty, int speedSelection) throws IOException{
         int figureFlag = 0;
         int freeRoadPos = 0;
+        
+        
         while(figureFlag<figureQty){
             freeRoadPos = selectRoad(this.getRoadObjectArray());
             float roadXPos = this.getRoadObjectArray().get(freeRoadPos).getxPosition();
             float roadYPos = this.getRoadObjectArray().get(freeRoadPos).getyPosition();
             float roadHeight = this.getRoadObjectArray().get(freeRoadPos).getHeight();
             
-            ThreadFigure tf = new ThreadFigure(roadXPos, roadYPos, speedSelection, roadHeight,roadHeight/2);
-            //Road.add(tf);
+            ThreadFigure tf = new ThreadFigure(roadXPos, roadYPos, SpeedEnum.Slow, roadHeight,roadHeight/2);
+            //TODO add to road
+            //this.getRoadObjectArray().get(freeRoadPos).getFigureList().;
             
         }
     }
+
     
     public int selectRoad(ArrayList<Road> roads){
         Road freeRoad = roads.get(0);
