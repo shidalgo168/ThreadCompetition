@@ -33,6 +33,8 @@ public class InitInterfaceAndThreads implements Runnable {
     private PanelRepaint panelRepaint;
     private int sleepThreadTime;
     private int sleepTimePaint;
+    
+    
 
     //constructor
     public InitInterfaceAndThreads() throws IOException {
@@ -45,6 +47,15 @@ public class InitInterfaceAndThreads implements Runnable {
         }//end for
     }
 
+    public ArrayList<Road> getRoadObjectArray() {
+        return roadObjectArray;
+    }
+
+    public void setRoadObjectArray(ArrayList<Road> roadObjectArray) {
+        this.roadObjectArray = roadObjectArray;
+    }
+
+    
     @Override
     public void run() {
         frame = new JFrame();
@@ -86,6 +97,32 @@ public class InitInterfaceAndThreads implements Runnable {
     public void repaintMovingPanel() {
         movingPanel.repaint();
     }
-
     
+    public void paramGenerator(int figureQty, int speedSelection){
+        int figureFlag = 0;
+        int freeRoadPos = 0;
+        while(figureFlag<figureQty){
+            freeRoadPos = selectRoad(this.getRoadObjectArray());
+            float roadXPos = this.getRoadObjectArray().get(freeRoadPos).getxPosition();
+            float roadYPos = this.getRoadObjectArray().get(freeRoadPos).getyPosition();
+            float roadHeight = this.getRoadObjectArray().get(freeRoadPos).getHeight();
+            
+            ThreadFigure tf = new ThreadFigure(roadXPos, roadYPos, speedSelection, roadHeight,roadHeight/2);
+            //Road.add(tf);
+            
+        }
+    }
+    
+    public int selectRoad(ArrayList<Road> roads){
+        Road freeRoad = roads.get(0);
+        int freeRoadPos = 0;
+        for (Road road : roads) {
+            if(road.getFigureList().size()<freeRoad.getFigureList().size()){
+                freeRoad = road;
+                freeRoadPos=roads.indexOf(freeRoad);
+            }
+        }
+        return freeRoadPos;
+    }
+
 }
