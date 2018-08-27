@@ -8,12 +8,15 @@ package threadcompetition;
 import java.awt.Color;
 import java.awt.Graphics;
 import java.util.ArrayList;
+import java.util.logging.Level;
+import java.util.logging.Logger;
+import javax.swing.SwingUtilities;
 
 /**
  *
  * @author Sergio Hidalgo
  */
-public class Road {
+public class Road implements Runnable{
     private float xPosition;
     private float yPosition;
     private float width;
@@ -21,8 +24,11 @@ public class Road {
     private int direction;
     private boolean barrier;
     private ArrayList<MoveThreadFigure> figureList;
+    private boolean running;
+    private InitInterfaceAndThreads movingMain;
     
-    public Road(float pXPosition, float pYPosition, float pWidth, float pHeight){
+    public Road(InitInterfaceAndThreads pMovingMain, float pXPosition, float pYPosition, float pWidth, float pHeight){
+        this.movingMain = pMovingMain;
         this.xPosition = pXPosition;
         this.yPosition = pYPosition;
         this.width = pWidth;
@@ -30,8 +36,43 @@ public class Road {
         this.direction = 1;
         this.barrier = false;
         this.figureList = new ArrayList<>();
+        this.running = false;
     }
-
+    
+    @Override
+    public void run (){
+        this.running = true;
+        while(running){
+            figureList.forEach((currentMove) -> {
+                    try {
+                        Thread.sleep(currentMove.getSleepTime());
+                        if(!currentMove.getRunning() && currentMove.getMyObject() != null){
+                            new Thread(currentMove).start();
+                            currentMove.setRunning(true);
+                            
+                        }
+                        else {
+                            //TODO CLEAN FUNCTION
+                            //cleanAllMoves(roadObjectArray);
+                        }
+                        repaintJPanel();
+                    } catch (InterruptedException ex) {
+                        Logger.getLogger(InitInterfaceAndThreads.class.getName()).log(Level.SEVERE, null, ex);
+                    }
+            });
+        }
+    }
+    
+    private void repaintJPanel() {
+        SwingUtilities.invokeLater(new Runnable() {
+            @Override
+            public void run() {
+                movingMain.repaintMovingPanel();
+                
+            }
+        });
+    }
+    
     public float getxPosition() {
         return xPosition;
     }
@@ -91,6 +132,16 @@ public class Road {
     public void setFigureList(ArrayList<MoveThreadFigure> figureList) {
         this.figureList = figureList;
     }
+
+    public boolean isRunning() {
+        return running;
+    }
+
+    public void setRunning(boolean running) {
+        this.running = running;
+    }
+    
+    
     
     
     
