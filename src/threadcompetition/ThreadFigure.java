@@ -39,16 +39,16 @@ public class ThreadFigure extends Thread{
         this.sprite.add(ImageIO.read(getClass().getResource("/Assets/blue_car.jpg")));
         this.sprite.add(ImageIO.read(getClass().getResource("/Assets/red_car.jpg")));
         this.sprite.add(ImageIO.read(getClass().getResource("/Assets/green_car.jpg")));
-        
+        //Elias es un iota
         switch(speed.getValue()){
             case (1): 
-                this.image = sprite.get(1);
+                this.image = sprite.get(0);
                 break;
             case (2): 
-                this.image = sprite.get(2);
+                this.image = sprite.get(1);
                 break;
             case (3): 
-                this.image = sprite.get(3);
+                this.image = sprite.get(2);
                 break;
         }
     }

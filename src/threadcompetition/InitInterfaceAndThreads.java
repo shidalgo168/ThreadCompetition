@@ -12,6 +12,8 @@ import static java.lang.Math.abs;
 import static java.lang.Math.random;
 import static java.lang.Math.round;
 import java.util.ArrayList;
+import java.util.logging.Level;
+import java.util.logging.Logger;
 import javax.swing.JFrame;
 /**
  *
@@ -47,7 +49,7 @@ public class InitInterfaceAndThreads implements Runnable {
         this.runningThread = true;
         
         for (int i = 0; i < ROADS_COUNT; i++) {
-           roadObjectArray.add( new Road(ROAD_WIDTH*i, 10, ROAD_WIDTH, DRAWING_WIDTH));
+           roadObjectArray.add( new Road(this, ROAD_WIDTH*i, 10, ROAD_WIDTH, DRAWING_WIDTH));
         }//end for
     }
 
@@ -80,15 +82,17 @@ public class InitInterfaceAndThreads implements Runnable {
         frame.setLocationByPlatform(true);
         frame.setVisible(true);
 
-        //START THREADS
-        roadObjectArray.forEach((currentRoad) -> {
-            currentRoad.getFigureList().forEach((moveThread) -> {
-                new Thread(moveThread).start();
-            });
-        }); //end for
-            
+        try {
+            //START THREADS//end for
+            paramGenerator(8, SpeedEnum.Slow);
+        } catch (IOException ex) {
+            Logger.getLogger(InitInterfaceAndThreads.class.getName()).log(Level.SEVERE, null, ex);
+        } catch (InterruptedException ex) {
+            Logger.getLogger(InitInterfaceAndThreads.class.getName()).log(Level.SEVERE, null, ex);
+        }
         panelRepaint = new PanelRepaint(this, this.sleepTimePaint, this.runningThread);
         new Thread(panelRepaint).start();
+        
     }
 
     private void exitProcedure() {
@@ -101,8 +105,16 @@ public class InitInterfaceAndThreads implements Runnable {
     public void repaintMovingPanel() {
         movingPanel.repaint();
     }
+
+    public boolean isRunningThread() {
+        return runningThread;
+    }
+
+    public void setRunningThread(boolean runningThread) {
+        this.runningThread = runningThread;
+    }
     
-    public void paramGenerator(int figureQty, SpeedEnum speedSelection) throws IOException{
+    public void paramGenerator(int figureQty, SpeedEnum speedSelection) throws IOException, InterruptedException{
         int figureFlag = 0;
         int freeRoadPos = 0;
         
@@ -115,13 +127,13 @@ public class InitInterfaceAndThreads implements Runnable {
             
 
             ThreadFigure tf = new ThreadFigure(roadXPos, roadYPos, speedSelection, roadHeight,roadHeight/2);
-            MoveThreadFigure newMoveThread = new MoveThreadFigure(tf, speedSelection, true, currentDirection, currentBarrier);
-            //TODO add to road
-            this.getRoadObjectArray().get(freeRoadPos).getFigureList().add(newMoveThread);
-            // new Thread(this.getRoadObjectArray().getLast()).start();
-            
+
+            MoveThreadFigure newMoveThread = new MoveThreadFigure(tf, speedSelection, false, currentDirection, currentBarrier);
+            this.roadObjectArray.get(freeRoadPos).getFigureList().add(newMoveThread);
+            figureFlag++;            
         }
     }
+
 
     public void randomGenerator(int figureQty) throws IOException{
         int figureFlag = 0;
@@ -140,6 +152,15 @@ public class InitInterfaceAndThreads implements Runnable {
             this.getRoadObjectArray().get(freeRoadPos).getFigureList().add(newMoveThread);
             
         }
+=======
+    
+    public void startAllThreads(){
+        roadObjectArray.forEach((currentRoad) -> {
+            if(!currentRoad.isRunning()){
+                new Thread(currentRoad).start();
+            }                
+        });
+>>>>>>> dev
     }
     
     public int selectRoad(ArrayList<Road> roads){

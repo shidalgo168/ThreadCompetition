@@ -44,23 +44,23 @@ public class MoveThreadFigure implements Runnable{
 
     @Override
     public void run() {
-        while(running){
-            myObject.move(direction);
+        while(this.running){
+            this.myObject.move(this.direction);
             
             try {
                 //System.out.println("Thread name: " + this.name);
                 Thread.sleep(this.sleepTime);
-                if(barrier){
-                    if(!myObject.move(direction, barrier)){
-                        running = false;
-                        this.finalize();
+                
+                if(this.barrier){
+                    if(!this.myObject.move(this.direction, this.barrier)){
+                        this.running = false;
                     }
                 }
                 else{
-                    if(!myObject.move(direction)){
-                        running = false;
-                        this.finalize();
+                    if(!this.myObject.move(this.direction)){
+                        this.running = false;
                     }
+                    
                 }
                 
             } catch (InterruptedException ex) {
@@ -70,11 +70,15 @@ public class MoveThreadFigure implements Runnable{
             }
             
         }//end while
-        
+        this.myObject = null;
     }
     
     public synchronized void setRunning(boolean running) {
         this.running = running;
+    }
+    
+    public synchronized boolean getRunning() {
+        return this.running;
     }
 
     public ThreadFigure getMyObject() {

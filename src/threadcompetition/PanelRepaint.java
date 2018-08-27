@@ -4,6 +4,10 @@
  * and open the template in the editor.
  */
 package threadcompetition;
+import java.io.IOException;
+import java.util.ArrayList;
+import java.util.logging.Level;
+import java.util.logging.Logger;
 import javax.swing.SwingUtilities;
 /**
  *
@@ -14,13 +18,13 @@ import javax.swing.SwingUtilities;
 public class PanelRepaint implements Runnable {
 
     private boolean running;
-    private InitInterfaceAndThreads movingSquaresMain;
+    private InitInterfaceAndThreads movingMain;
     private int sleepTimePaint;
 
 
-    public PanelRepaint(InitInterfaceAndThreads movingSquares, int sleepTimePaint, boolean running) {
+    public PanelRepaint(InitInterfaceAndThreads pMovingMain, int sleepTimePaint, boolean running) {
 
-        this.movingSquaresMain = movingSquares;
+        this.movingMain = pMovingMain;
         this.sleepTimePaint = sleepTimePaint;
         this.running = running;
     }
@@ -28,8 +32,8 @@ public class PanelRepaint implements Runnable {
     @Override
     public void run() {
         while (running) {
-            repaintJPanel();
             sleep();
+            movingMain.startAllThreads();
         }
     }
 
@@ -37,7 +41,8 @@ public class PanelRepaint implements Runnable {
         SwingUtilities.invokeLater(new Runnable() {
             @Override
             public void run() {
-                movingSquaresMain.repaintMovingPanel();
+                movingMain.repaintMovingPanel();
+                
             }
         });
     }
