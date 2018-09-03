@@ -151,8 +151,7 @@ public class InitInterfaceAndThreads implements Runnable {
             //TODO add to road
             this.getRoadObjectArray().get(freeRoadPos).getFigureList().add(newMoveThread);
             
-        }
-=======
+        }}
     
     public void startAllThreads(){
         roadObjectArray.forEach((currentRoad) -> {
@@ -160,7 +159,7 @@ public class InitInterfaceAndThreads implements Runnable {
                 new Thread(currentRoad).start();
             }                
         });
->>>>>>> dev
+
     }
     
     public int selectRoad(ArrayList<Road> roads){
