@@ -26,9 +26,9 @@ public class Road implements Runnable{
     private boolean barrier;
     private ArrayList<MoveThreadFigure> figureList;
     private boolean running;
-    private InitInterfaceAndThreads movingMain;
+    private MainGUI movingMain;
     
-    public Road(InitInterfaceAndThreads pMovingMain, float pXPosition, float pYPosition, float pWidth, float pHeight){
+    public Road(MainGUI pMovingMain, float pXPosition, float pYPosition, float pWidth, float pHeight){
         this.movingMain = pMovingMain;
         this.xPosition = pXPosition;
         this.yPosition = pYPosition;
@@ -54,7 +54,7 @@ public class Road implements Runnable{
                     }
                     repaintJPanel();
                 } catch (InterruptedException ex) {
-                    Logger.getLogger(InitInterfaceAndThreads.class.getName()).log(Level.SEVERE, null, ex);
+                    Logger.getLogger(MainGUI.class.getName()).log(Level.SEVERE, null, ex);
                 }
             }
             
