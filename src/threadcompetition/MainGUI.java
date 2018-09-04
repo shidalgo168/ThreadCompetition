@@ -37,6 +37,7 @@ public class MainGUI extends javax.swing.JFrame {
         interruptBtn = new javax.swing.JToggleButton();
 
         setDefaultCloseOperation(javax.swing.WindowConstants.EXIT_ON_CLOSE);
+        setTitle("Thread Race");
 
         SpeedTxF.setText("jTextField1");
         SpeedTxF.addActionListener(new java.awt.event.ActionListener() {
@@ -62,7 +63,7 @@ public class MainGUI extends javax.swing.JFrame {
         simulationBtn.setText("Simulation");
 
         interruptBtn.setBackground(new java.awt.Color(255, 153, 0));
-        interruptBtn.setText("jToggleButton1");
+        interruptBtn.setText("Interrupt");
 
         javax.swing.GroupLayout layout = new javax.swing.GroupLayout(getContentPane());
         getContentPane().setLayout(layout);
@@ -86,7 +87,7 @@ public class MainGUI extends javax.swing.JFrame {
                     .addComponent(revertBtn, javax.swing.GroupLayout.PREFERRED_SIZE, 81, javax.swing.GroupLayout.PREFERRED_SIZE))
                 .addGap(18, 18, 18)
                 .addComponent(interruptBtn)
-                .addContainerGap(149, Short.MAX_VALUE))
+                .addContainerGap(177, Short.MAX_VALUE))
         );
         layout.setVerticalGroup(
             layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
