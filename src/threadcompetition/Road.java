@@ -8,6 +8,7 @@ package threadcompetition;
 import java.awt.Color;
 import java.awt.Graphics;
 import java.util.ArrayList;
+import java.util.Iterator;
 import java.util.logging.Level;
 import java.util.logging.Logger;
 import javax.swing.SwingUtilities;
@@ -51,9 +52,8 @@ public class Road implements Runnable{
                             currentMove.setRunning(true);
                             
                         }
-                        else {
-                            //TODO CLEAN FUNCTION
-                            //cleanAllMoves(roadObjectArray);
+                        else if(!currentMove.getRunning() || currentMove.getMyObject() == null){
+                           cleanFigures();
                         }
                         repaintJPanel();
                     } catch (InterruptedException ex) {
@@ -173,9 +173,12 @@ public class Road implements Runnable{
     }
     
     public void cleanFigures(){
-        for(MoveThreadFigure figure : this.figureList){
-            if(figure.getMyObject() == null){ //Como se que termino 
-                this.figureList.remove(figure);
+        Iterator<MoveThreadFigure> index = this.figureList.iterator();
+        while (index.hasNext()) {
+            MoveThreadFigure figure = index.next(); // must be called before you can call i.remove()
+            // Do something
+            if(figure.getMyObject()==null){
+                index.remove();
             }
         }
     }
