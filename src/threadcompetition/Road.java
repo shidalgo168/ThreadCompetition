@@ -168,8 +168,10 @@ public class Road implements Runnable{
         g.fillRect((int)xPosition+3, (int)yPosition+3,(int) width-4,(int) height-3);
         Iterator<MoveThreadFigure> index = this.figureList.iterator();
         while (index.hasNext()) {
+            cleanFigures();
             MoveThreadFigure figure = index.next(); // must be called before you can call i.remove()
             // Do something
+            System.out.println("debug: "+ figure.toString());
             figure.getMyObject().draw(g);
         }
     }
