@@ -175,14 +175,6 @@ public class Road implements Runnable{
     }
     
     public void cleanFigures(){
-<<<<<<< HEAD
-        Iterator<MoveThreadFigure> index = this.figureList.iterator();
-        while (index.hasNext()) {
-            MoveThreadFigure figure = index.next(); // must be called before you can call i.remove()
-            // Do something
-            if(figure.getMyObject()==null){
-                index.remove();
-=======
         int arrayIndex = 0;
         int newArraySize = figureList.size();
         while(arrayIndex < newArraySize){
@@ -192,7 +184,6 @@ public class Road implements Runnable{
             }
             else {
                 arrayIndex++;
->>>>>>> dev
             }
         }
     }
