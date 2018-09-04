@@ -49,19 +49,16 @@ public class Road implements Runnable{
                 try {
                     MoveThreadFigure currentMove = index.next();
                     Thread.sleep(currentMove.getSleepTime());
-                    if(!currentMove.getRunning() && currentMove.getMyObject() != null){
-                        new Thread(currentMove).start();
-                        currentMove.setRunning(true);
-
-                    }
-                    else if(!currentMove.getRunning() || currentMove.getMyObject() == null){
-                       index.remove();
+                    if(!currentMove.getRunning()){
+                       cleanFigures();
                     }
                     repaintJPanel();
                 } catch (InterruptedException ex) {
                     Logger.getLogger(InitInterfaceAndThreads.class.getName()).log(Level.SEVERE, null, ex);
                 }
             }
+            
+            
         }
     }
     
@@ -167,24 +164,21 @@ public class Road implements Runnable{
         g.fillRect((int)xPosition, (int)yPosition,(int) width,(int) height);
         g.setColor(new Color(33,33,33));
         g.fillRect((int)xPosition+3, (int)yPosition+3,(int) width-4,(int) height-3);
+            Iterator<MoveThreadFigure> index = this.figureList.iterator();
+            while (index.hasNext()) {
+                MoveThreadFigure figure = index.next(); // must be called before you can call i.remove()
+                // Do something
+                figure.getMyObject().draw(g);
+            }
+    }
+    
+    public void cleanFigures(){
         Iterator<MoveThreadFigure> index = this.figureList.iterator();
         while (index.hasNext()) {
             MoveThreadFigure figure = index.next(); // must be called before you can call i.remove()
             // Do something
-            figure.getMyObject().draw(g);
-        }
-    }
-    
-    public void cleanFigures(){
-        int arrayIndex = 0;
-        int newArraySize = figureList.size();
-        while(arrayIndex < newArraySize){
-            if(figureList.get(arrayIndex).getMyObject() == null){ //Como se que termino 
-                this.figureList.remove(figureList.get(arrayIndex));
-                newArraySize--;
-            }
-            else {
-                arrayIndex++;
+            if(figure.getMyObject()==null){
+                index.remove();
             }
         }
     }

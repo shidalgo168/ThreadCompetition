@@ -128,7 +128,18 @@ public class InitInterfaceAndThreads implements Runnable {
 
             ThreadFigure tf = new ThreadFigure(roadXPos, roadYPos, speedSelection, roadHeight,roadHeight/2);
 
-            MoveThreadFigure newMoveThread = new MoveThreadFigure(tf, speedSelection, false, currentDirection, currentBarrier);
+            MoveThreadFigure newMoveThread = new MoveThreadFigure(tf, speedSelection, true, currentDirection, currentBarrier);
+            new Thread(){
+                @Override
+                public void run (){
+                    try {
+                        Thread.sleep(10000);
+                    } catch (InterruptedException ex) {
+                        Logger.getLogger(InitInterfaceAndThreads.class.getName()).log(Level.SEVERE, null, ex);
+                    }
+                }
+            }.start();
+            new Thread(newMoveThread).start();
             this.roadObjectArray.get(freeRoadPos).getFigureList().add(newMoveThread);
             figureFlag++;            
         }

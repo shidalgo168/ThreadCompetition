@@ -69,7 +69,6 @@ public class MoveThreadFigure implements Runnable{
             }
             
         }//end while
-        this.myObject = null;
     }
     
     public synchronized void setRunning(boolean running) {
