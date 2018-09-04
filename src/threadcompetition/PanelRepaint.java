@@ -4,10 +4,6 @@
  * and open the template in the editor.
  */
 package threadcompetition;
-import java.io.IOException;
-import java.util.ArrayList;
-import java.util.logging.Level;
-import java.util.logging.Logger;
 import javax.swing.SwingUtilities;
 /**
  *
@@ -18,11 +14,11 @@ import javax.swing.SwingUtilities;
 public class PanelRepaint implements Runnable {
 
     private boolean running;
-    private InitInterfaceAndThreads movingMain;
+    private MainGUI movingMain;
     private int sleepTimePaint;
 
 
-    public PanelRepaint(InitInterfaceAndThreads pMovingMain, int sleepTimePaint, boolean running) {
+    public PanelRepaint(MainGUI pMovingMain, int sleepTimePaint, boolean running) {
 
         this.movingMain = pMovingMain;
         this.sleepTimePaint = sleepTimePaint;
