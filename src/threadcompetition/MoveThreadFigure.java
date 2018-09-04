@@ -16,7 +16,6 @@ import java.util.logging.Logger;
  */
 public class MoveThreadFigure implements Runnable{
     private boolean running;
-    
     private ThreadFigure myObject;
     private int sleepTime;
     private int direction;

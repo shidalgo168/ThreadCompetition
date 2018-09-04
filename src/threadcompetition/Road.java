@@ -172,4 +172,14 @@ public class Road implements Runnable{
         
     }
     
+    public void cleanFigures(){
+        for(MoveThreadFigure figure : this.figureList){
+            if(figure.getMyObject() == null){ //Como se que termino 
+                this.figureList.remove(figure);
+            }
+        }
+    }
+    
+    
+    
 }
