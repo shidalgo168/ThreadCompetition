@@ -5,6 +5,7 @@
  */
 package threadcompetition;
 
+import java.awt.Color;
 import java.awt.Graphics;
 import java.awt.Image;
 import java.io.FileNotFoundException;
@@ -28,7 +29,7 @@ public class ThreadFigure extends Thread{
     private Image image;
     private ArrayList<Image> sprite;
     
-    public ThreadFigure(float pXPos, float pYPos, SpeedEnum pSpeedType, float pFinishLimit, float pBarrierLimit) throws FileNotFoundException, IOException {   
+    public ThreadFigure(float pXPos, float pYPos, SpeedEnum pSpeedType, float pFinishLimit, float pBarrierLimit, boolean pToggleImage) throws FileNotFoundException, IOException {   
         this.xPosition = pXPos;
         this.yPosition = pYPos;
         this.speed = pSpeedType;
@@ -53,7 +54,7 @@ public class ThreadFigure extends Thread{
                 this.image = sprite.get(2);
                 break;
         }
-        this.useImage = true;
+        this.useImage = pToggleImage;
     }
 
     public ArrayList<Image> getSprite() {
@@ -184,13 +185,17 @@ public class ThreadFigure extends Thread{
         else {
             switch(speed.getValue()){
                 case (1): 
-                    g.drawArc((int) xPosition,(int) yPosition, width, height, 0, 80);
+                    g.setColor(new Color(40,40,255));
+                    
+                    g.fillArc((int) xPosition,(int) yPosition, width, height, 90, 180);
                     break;
-                case (2): 
-                    g.drawOval((int) xPosition,(int) yPosition, width, height);
+                case (2):
+                    g.setColor(new Color(255,40,40));
+                    g.fillOval((int) xPosition,(int) yPosition, width, height);
                     break;
                 case (3): 
-                    g.drawRect((int) xPosition,(int) yPosition, width, height);
+                    g.setColor(new Color(40,255,40));
+                    g.fillRect((int) xPosition,(int) yPosition, width, height);
                     break;
             }
         }

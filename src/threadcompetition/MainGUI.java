@@ -28,16 +28,18 @@ public class MainGUI extends javax.swing.JFrame implements Runnable{
     private boolean currentBarrier;
     private int sleepThreadTime;
     private int sleepTimePaint;
+    private boolean toggleImage;
 
     /**
      * Creates new form MainGUI
      */
     public MainGUI() {
         this.sleepThreadTime = 10;
-        this.sleepTimePaint = 1;
+        this.sleepTimePaint = 10;
         this.currentDirection = 1;
         this.currentBarrier = false;
         this.runningThread = true;
+        toggleImage = true;
         
         for (int i = 0; i < ROADS_COUNT; i++) {
            roadObjectArray.add( new Road(this, ROAD_WIDTH*i, 10, ROAD_WIDTH, DRAWING_WIDTH));
@@ -212,7 +214,8 @@ public class MainGUI extends javax.swing.JFrame implements Runnable{
 
 
     private void figureToggleActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_figureToggleActionPerformed
-        // TODO add your handling code here:
+        figureToggle();
+        toggleImage = !toggleImage;
     }//GEN-LAST:event_figureToggleActionPerformed
 
     private void revertBtnActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_revertBtnActionPerformed
@@ -262,6 +265,13 @@ public class MainGUI extends javax.swing.JFrame implements Runnable{
     
     @Override
     public void run() {
+        try {
+            paramGenerator(5, SpeedEnum.Slow);
+        } catch (IOException ex) {
+            Logger.getLogger(MainGUI.class.getName()).log(Level.SEVERE, null, ex);
+        } catch (InterruptedException ex) {
+            Logger.getLogger(MainGUI.class.getName()).log(Level.SEVERE, null, ex);
+        }
         panelRepaint = new PanelRepaint(this, this.sleepTimePaint, this.runningThread);
         new Thread(panelRepaint).start();
     }
@@ -298,11 +308,12 @@ public class MainGUI extends javax.swing.JFrame implements Runnable{
             float roadHeight = this.getRoadObjectArray().get(freeRoadPos).getHeight();
             
 
-            ThreadFigure tf = new ThreadFigure(roadXPos, roadYPos, speedSelection, roadHeight,roadHeight/2);
+            ThreadFigure tf = new ThreadFigure(roadXPos, roadYPos, speedSelection, roadHeight,roadHeight/2, toggleImage);
 
             MoveThreadFigure newMoveThread = new MoveThreadFigure(tf, speedSelection, true, currentDirection, currentBarrier);
             this.roadObjectArray.get(freeRoadPos).getFigureList().add(newMoveThread);
             new Thread(newMoveThread).start();
+            
             figureFlag++;            
         }
     }
@@ -319,7 +330,7 @@ public class MainGUI extends javax.swing.JFrame implements Runnable{
             float roadYPos = this.getRoadObjectArray().get(freeRoadPos).getyPosition();
             float roadHeight = this.getRoadObjectArray().get(freeRoadPos).getHeight();
             
-            ThreadFigure tf = new ThreadFigure(roadXPos, roadYPos, SpeedEnum.getRandomSpeed(), roadHeight,roadHeight/2);
+            ThreadFigure tf = new ThreadFigure(roadXPos, roadYPos, SpeedEnum.getRandomSpeed(), roadHeight,roadHeight/2, toggleImage);
             MoveThreadFigure newMoveThread = new MoveThreadFigure(tf, tf.getSpeed(), true, currentDirection, currentBarrier);
             this.getRoadObjectArray().get(freeRoadPos).getFigureList().add(newMoveThread);
             
