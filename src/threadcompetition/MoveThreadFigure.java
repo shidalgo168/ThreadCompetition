@@ -5,7 +5,6 @@
  */
 package threadcompetition;
 
-import java.util.concurrent.ThreadFactory;
 
 import java.util.logging.Level;
 import java.util.logging.Logger;

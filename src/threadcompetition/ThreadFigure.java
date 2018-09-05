@@ -7,7 +7,6 @@ package threadcompetition;
 
 import java.awt.Graphics;
 import java.awt.Image;
-import java.awt.image.ImageObserver;
 import java.io.FileNotFoundException;
 import java.io.IOException;
 import java.util.ArrayList;
