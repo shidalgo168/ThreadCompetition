@@ -116,7 +116,8 @@ public class MainGUI extends javax.swing.JFrame implements Runnable{
             }
         });
 
-        roadTxF.setText("jTextField1");
+        roadTxF.setText("Road");
+        roadTxF.setToolTipText("Roads");
 
         simulationBtn.setBackground(new java.awt.Color(102, 102, 255));
         simulationBtn.setText("Simulation");
@@ -217,13 +218,23 @@ public class MainGUI extends javax.swing.JFrame implements Runnable{
 
     private void createBtnActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_createBtnActionPerformed
         // TODO add your handling code here:
-        int FigureQty = Integer.parseInt(valueTxF.getText());
         try {
+            if(Integer.parseInt(roadTxF.getText()) < 25 ){
+                int size = roadObjectArray.size();
+                for(int index = size; index < 25 && index-size < Integer.parseInt(roadTxF.getText()); index++){
+                    roadObjectArray.add( new Road(this, ROAD_WIDTH*index, 10, ROAD_WIDTH, DRAWING_WIDTH));
+                }
+            }else {
+                System.err.println("Max of roads = 25");
+            }
+            int FigureQty = Integer.parseInt(valueTxF.getText());
             paramGenerator(FigureQty, SpeedEnum.values()[Integer.parseInt(SpeedTxF.getText())]);
         } catch (IOException ex) {
             Logger.getLogger(MainGUI.class.getName()).log(Level.SEVERE, null, ex);
         } catch (InterruptedException ex) {
             Logger.getLogger(MainGUI.class.getName()).log(Level.SEVERE, null, ex);
+        } catch (NumberFormatException ex) {
+            System.err.println("Wrong input, must be numbers");
         }
     }//GEN-LAST:event_createBtnActionPerformed
 

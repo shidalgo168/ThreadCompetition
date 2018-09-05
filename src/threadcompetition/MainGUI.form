@@ -141,7 +141,8 @@
     </Component>
     <Component class="javax.swing.JTextField" name="roadTxF">
       <Properties>
-        <Property name="text" type="java.lang.String" value="jTextField1"/>
+        <Property name="text" type="java.lang.String" value="Road"/>
+        <Property name="toolTipText" type="java.lang.String" value="Roads"/>
       </Properties>
     </Component>
     <Component class="javax.swing.JButton" name="simulationBtn">
