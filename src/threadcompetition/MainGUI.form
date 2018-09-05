@@ -148,6 +148,9 @@
         </Property>
         <Property name="text" type="java.lang.String" value="Simulation"/>
       </Properties>
+      <Events>
+        <EventHandler event="actionPerformed" listener="java.awt.event.ActionListener" parameters="java.awt.event.ActionEvent" handler="simulationBtnActionPerformed"/>
+      </Events>
     </Component>
     <Component class="javax.swing.JToggleButton" name="interruptBtn">
       <Properties>

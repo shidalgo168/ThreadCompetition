@@ -115,6 +115,11 @@ public class MainGUI extends javax.swing.JFrame implements Runnable{
 
         simulationBtn.setBackground(new java.awt.Color(102, 102, 255));
         simulationBtn.setText("Simulation");
+        simulationBtn.addActionListener(new java.awt.event.ActionListener() {
+            public void actionPerformed(java.awt.event.ActionEvent evt) {
+                simulationBtnActionPerformed(evt);
+            }
+        });
 
         interruptBtn.setBackground(new java.awt.Color(255, 153, 0));
         interruptBtn.setText("Interrupt");
@@ -225,6 +230,15 @@ public class MainGUI extends javax.swing.JFrame implements Runnable{
         }
     }//GEN-LAST:event_revertBtnActionPerformed
 
+    private void simulationBtnActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_simulationBtnActionPerformed
+        try {
+            // TODO add your handling code here:
+            randomGenerator();
+        } catch (IOException ex) {
+            Logger.getLogger(MainGUI.class.getName()).log(Level.SEVERE, null, ex);
+        }
+    }//GEN-LAST:event_simulationBtnActionPerformed
+
 
     /**
      * @param args the command line arguments
@@ -319,22 +333,21 @@ public class MainGUI extends javax.swing.JFrame implements Runnable{
     }
 
 
-    public void randomGenerator(int figureQty) throws IOException{
+    public void randomGenerator() throws IOException {
         int figureFlag = 0;
         int freeRoadPos = 0;
-        
-        
-        while(figureFlag<figureQty){
-            freeRoadPos = selectRoad(this.getRoadObjectArray());
-            float roadXPos = this.getRoadObjectArray().get(freeRoadPos).getxPosition();
-            float roadYPos = this.getRoadObjectArray().get(freeRoadPos).getyPosition();
-            float roadHeight = this.getRoadObjectArray().get(freeRoadPos).getHeight();
-            
-            ThreadFigure tf = new ThreadFigure(roadXPos, roadYPos, SpeedEnum.getRandomSpeed(), roadHeight,roadHeight/2, toggleImage);
-            MoveThreadFigure newMoveThread = new MoveThreadFigure(tf, tf.getSpeed(), true, currentDirection, currentBarrier);
-            this.getRoadObjectArray().get(freeRoadPos).getFigureList().add(newMoveThread);
-            
-        }}
+
+        freeRoadPos = selectRoad(this.getRoadObjectArray());
+        float roadXPos = this.getRoadObjectArray().get(freeRoadPos).getxPosition();
+        float roadYPos = this.getRoadObjectArray().get(freeRoadPos).getyPosition();
+        float roadHeight = this.getRoadObjectArray().get(freeRoadPos).getHeight();
+
+        ThreadFigure tf = new ThreadFigure(roadXPos, roadYPos, SpeedEnum.getRandomSpeed(), roadHeight, roadHeight / 2, toggleImage);
+        MoveThreadFigure newMoveThread = new MoveThreadFigure(tf, tf.getSpeed(), true, currentDirection, currentBarrier);
+        this.getRoadObjectArray().get(freeRoadPos).getFigureList().add(newMoveThread);
+        new Thread(newMoveThread).start();
+
+    }
     
     public void startAllThreads(){
         roadObjectArray.forEach((currentRoad) -> {
