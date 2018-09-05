@@ -8,6 +8,7 @@ package threadcompetition;
 import java.awt.Color;
 import java.awt.Graphics;
 import java.util.ArrayList;
+import java.util.ConcurrentModificationException;
 import java.util.Iterator;
 import java.util.logging.Level;
 import java.util.logging.Logger;
@@ -49,16 +50,16 @@ public class Road implements Runnable{
                 try {
                     MoveThreadFigure currentMove = index.next();
                     if(!currentMove.getRunning()){
-                       cleanFigures();
+                        cleanFigures();
                     }
                     repaintJPanel();
                     Thread.sleep(currentMove.getSleepTime());
                 } catch (InterruptedException ex) {
                     Logger.getLogger(MainGUI.class.getName()).log(Level.SEVERE, null, ex);
+                } catch (ConcurrentModificationException ex) {
+                    break;
                 }
             }
-            
-            
         }
     }
     
@@ -139,9 +140,6 @@ public class Road implements Runnable{
     public void setRunning(boolean running) {
         this.running = running;
     }
-    
-    
-    
     
     
     public void reversePath(){

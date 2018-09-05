@@ -76,6 +76,7 @@ public class MainGUI extends javax.swing.JFrame implements Runnable{
             }
         }
         ;
+        figureToggle = new javax.swing.JButton();
 
         setDefaultCloseOperation(javax.swing.WindowConstants.EXIT_ON_CLOSE);
         setTitle("Thread Race");
@@ -122,6 +123,13 @@ public class MainGUI extends javax.swing.JFrame implements Runnable{
             .addGap(0, 355, Short.MAX_VALUE)
         );
 
+        figureToggle.setText("Figure/Image");
+        figureToggle.addActionListener(new java.awt.event.ActionListener() {
+            public void actionPerformed(java.awt.event.ActionEvent evt) {
+                figureToggleActionPerformed(evt);
+            }
+        });
+
         javax.swing.GroupLayout layout = new javax.swing.GroupLayout(getContentPane());
         getContentPane().setLayout(layout);
         layout.setHorizontalGroup(
@@ -147,7 +155,9 @@ public class MainGUI extends javax.swing.JFrame implements Runnable{
                             .addComponent(revertBtn, javax.swing.GroupLayout.PREFERRED_SIZE, 81, javax.swing.GroupLayout.PREFERRED_SIZE))
                         .addGap(18, 18, 18)
                         .addComponent(interruptBtn)
-                        .addGap(0, 282, Short.MAX_VALUE)))
+                        .addGap(31, 31, 31)
+                        .addComponent(figureToggle)
+                        .addGap(0, 142, Short.MAX_VALUE)))
                 .addContainerGap())
         );
         layout.setVerticalGroup(
@@ -170,7 +180,9 @@ public class MainGUI extends javax.swing.JFrame implements Runnable{
                             .addComponent(simulationBtn))
                         .addGap(6, 6, 6))
                     .addGroup(javax.swing.GroupLayout.Alignment.TRAILING, layout.createSequentialGroup()
-                        .addComponent(interruptBtn, javax.swing.GroupLayout.PREFERRED_SIZE, 38, javax.swing.GroupLayout.PREFERRED_SIZE)
+                        .addGroup(layout.createParallelGroup(javax.swing.GroupLayout.Alignment.BASELINE)
+                            .addComponent(interruptBtn, javax.swing.GroupLayout.PREFERRED_SIZE, 38, javax.swing.GroupLayout.PREFERRED_SIZE)
+                            .addComponent(figureToggle))
                         .addGap(19, 19, 19))))
         );
 
@@ -192,6 +204,10 @@ public class MainGUI extends javax.swing.JFrame implements Runnable{
             Logger.getLogger(MainGUI.class.getName()).log(Level.SEVERE, null, ex);
         }
     }//GEN-LAST:event_createBtnActionPerformed
+
+    private void figureToggleActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_figureToggleActionPerformed
+        // TODO add your handling code here:
+    }//GEN-LAST:event_figureToggleActionPerformed
 
     /**
      * @param args the command line arguments
@@ -232,18 +248,8 @@ public class MainGUI extends javax.swing.JFrame implements Runnable{
     
     @Override
     public void run() {
-        
-        try {
-            //START THREADS//end for
-            paramGenerator(8, SpeedEnum.Slow);
-        } catch (IOException ex) {
-            Logger.getLogger(MainGUI.class.getName()).log(Level.SEVERE, null, ex);
-        } catch (InterruptedException ex) {
-            Logger.getLogger(MainGUI.class.getName()).log(Level.SEVERE, null, ex);
-        }
         panelRepaint = new PanelRepaint(this, this.sleepTimePaint, this.runningThread);
         new Thread(panelRepaint).start();
-        
     }
     
     public void repaintMovingPanel() {
@@ -326,11 +332,20 @@ public class MainGUI extends javax.swing.JFrame implements Runnable{
         return freeRoadPos;
     }
     
+    public void figureToggle(){
+        roadObjectArray.forEach((currentRoad) -> {
+            currentRoad.getFigureList().forEach((figure) -> {
+                figure.getMyObject().switchUseImage();
+            });
+        });
+    }
+    
 
     // Variables declaration - do not modify//GEN-BEGIN:variables
     private javax.swing.JTextField SpeedTxF;
     private javax.swing.JButton barrierBtn;
     private javax.swing.JButton createBtn;
+    private javax.swing.JButton figureToggle;
     private javax.swing.JToggleButton interruptBtn;
     private javax.swing.JPanel jPanel1;
     private javax.swing.JButton revertBtn;

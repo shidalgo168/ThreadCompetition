@@ -24,6 +24,7 @@ public class ThreadFigure extends Thread{
     private float yPosition;
     private float finishLimit;
     private float barrierLimit;
+    private boolean useImage;
     private Image image;
     private ArrayList<Image> sprite;
     
@@ -49,6 +50,7 @@ public class ThreadFigure extends Thread{
                 this.image = sprite.get(2);
                 break;
         }
+        this.useImage = true;
     }
     
     public SpeedEnum getSpeed() {
@@ -90,6 +92,16 @@ public class ThreadFigure extends Thread{
     public void setFinishLimit(float finishLimit) {
         this.finishLimit = finishLimit;
     }
+
+    public boolean isUseImage() {
+        return useImage;
+    }
+
+    public void switchUseImage() {
+        this.useImage = !this.useImage;
+    }
+    
+    
 
     public boolean move(int direction) {
         float limit;
@@ -154,8 +166,22 @@ public class ThreadFigure extends Thread{
                 throw new UnsupportedOperationException("Not supported yet."); //To change body of generated methods, choose Tools | Templates.
             }
         }*/
-        g.drawImage(image,(int) xPosition,(int) yPosition, null);
-        
+        if(useImage){
+            g.drawImage(image,(int) xPosition,(int) yPosition, null);
+        }
+        else {
+            switch(speed.getValue()){
+                case (1): 
+                    g.drawArc((int) xPosition,(int) yPosition, width, height, 0, 80);
+                    break;
+                case (2): 
+                    g.drawOval((int) xPosition,(int) yPosition, width, height);
+                    break;
+                case (3): 
+                    g.drawRect((int) xPosition,(int) yPosition, width, height);
+                    break;
+            }
+        }
     }
     
 }
