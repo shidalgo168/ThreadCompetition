@@ -5,7 +5,6 @@
  */
 package threadcompetition;
 
-import java.util.concurrent.ThreadFactory;
 
 import java.util.logging.Level;
 import java.util.logging.Logger;
@@ -69,7 +68,6 @@ public class MoveThreadFigure implements Runnable{
             }
             
         }//end while
-        this.myObject = null;
     }
     
     public synchronized void setRunning(boolean running) {

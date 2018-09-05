@@ -5,16 +5,44 @@
  */
 package threadcompetition;
 
+import java.awt.Color;
+import java.awt.Graphics;
+import java.io.IOException;
+import java.util.ArrayList;
+import java.util.logging.Level;
+import java.util.logging.Logger;
+
 /**
  *
  * @author Elias
  */
-public class MainGUI extends javax.swing.JFrame {
+public class MainGUI extends javax.swing.JFrame implements Runnable{
+    private static final int DRAWING_WIDTH = 350;
+    private static final int ROADS_COUNT = 5;
+    private static final int ROAD_WIDTH = 30;
+    private boolean runningThread;
+    
+    private ArrayList<Road> roadObjectArray = new ArrayList<>();
+    private PanelRepaint panelRepaint;
+    private int currentDirection;
+    private boolean currentBarrier;
+    private int sleepThreadTime;
+    private int sleepTimePaint;
 
     /**
      * Creates new form MainGUI
      */
     public MainGUI() {
+        this.sleepThreadTime = 10;
+        this.sleepTimePaint = 1;
+        this.currentDirection = 1;
+        this.currentBarrier = false;
+        this.runningThread = true;
+        
+        for (int i = 0; i < ROADS_COUNT; i++) {
+           roadObjectArray.add( new Road(this, ROAD_WIDTH*i, 10, ROAD_WIDTH, DRAWING_WIDTH));
+        }//end for
+        
         initComponents();
     }
 
@@ -35,21 +63,39 @@ public class MainGUI extends javax.swing.JFrame {
         roadTxF = new javax.swing.JTextField();
         simulationBtn = new javax.swing.JButton();
         interruptBtn = new javax.swing.JToggleButton();
+        jPanel1 = new javax.swing.JPanel(){
+            @Override
+            protected void paintComponent(Graphics g) {
+                super.paintComponent(g);
+
+                g.setColor(Color.WHITE);
+
+                for (int i = 0; i < roadObjectArray.size(); i++) {
+                    roadObjectArray.get(i).draw(g);
+                }
+            }
+        }
+        ;
 
         setDefaultCloseOperation(javax.swing.WindowConstants.EXIT_ON_CLOSE);
         setTitle("Thread Race");
 
-        SpeedTxF.setText("jTextField1");
+        SpeedTxF.setText("Speed");
         SpeedTxF.addActionListener(new java.awt.event.ActionListener() {
             public void actionPerformed(java.awt.event.ActionEvent evt) {
                 SpeedTxFActionPerformed(evt);
             }
         });
 
-        valueTxF.setText("jTextField1");
+        valueTxF.setText("Quantity");
 
         createBtn.setBackground(new java.awt.Color(102, 102, 255));
         createBtn.setText("Create");
+        createBtn.addActionListener(new java.awt.event.ActionListener() {
+            public void actionPerformed(java.awt.event.ActionEvent evt) {
+                createBtnActionPerformed(evt);
+            }
+        });
 
         barrierBtn.setBackground(new java.awt.Color(102, 102, 255));
         barrierBtn.setText("Barrier");
@@ -65,34 +111,51 @@ public class MainGUI extends javax.swing.JFrame {
         interruptBtn.setBackground(new java.awt.Color(255, 153, 0));
         interruptBtn.setText("Interrupt");
 
+        javax.swing.GroupLayout jPanel1Layout = new javax.swing.GroupLayout(jPanel1);
+        jPanel1.setLayout(jPanel1Layout);
+        jPanel1Layout.setHorizontalGroup(
+            jPanel1Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
+            .addGap(0, 0, Short.MAX_VALUE)
+        );
+        jPanel1Layout.setVerticalGroup(
+            jPanel1Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
+            .addGap(0, 355, Short.MAX_VALUE)
+        );
+
         javax.swing.GroupLayout layout = new javax.swing.GroupLayout(getContentPane());
         getContentPane().setLayout(layout);
         layout.setHorizontalGroup(
             layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
             .addGroup(layout.createSequentialGroup()
                 .addContainerGap()
-                .addGroup(layout.createParallelGroup(javax.swing.GroupLayout.Alignment.TRAILING, false)
-                    .addComponent(createBtn, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE)
+                .addGroup(layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
+                    .addComponent(jPanel1, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE)
                     .addGroup(layout.createSequentialGroup()
-                        .addComponent(SpeedTxF, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE)
+                        .addGroup(layout.createParallelGroup(javax.swing.GroupLayout.Alignment.TRAILING, false)
+                            .addComponent(createBtn, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE)
+                            .addGroup(layout.createSequentialGroup()
+                                .addComponent(SpeedTxF, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE)
+                                .addGap(18, 18, 18)
+                                .addComponent(valueTxF, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE)))
                         .addGap(18, 18, 18)
-                        .addComponent(valueTxF, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE)))
-                .addGap(18, 18, 18)
-                .addGroup(layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
-                    .addComponent(roadTxF, javax.swing.GroupLayout.PREFERRED_SIZE, 65, javax.swing.GroupLayout.PREFERRED_SIZE)
-                    .addComponent(barrierBtn))
-                .addGap(18, 18, 18)
-                .addGroup(layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
-                    .addComponent(simulationBtn)
-                    .addComponent(revertBtn, javax.swing.GroupLayout.PREFERRED_SIZE, 81, javax.swing.GroupLayout.PREFERRED_SIZE))
-                .addGap(18, 18, 18)
-                .addComponent(interruptBtn)
-                .addContainerGap(177, Short.MAX_VALUE))
+                        .addGroup(layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
+                            .addComponent(roadTxF, javax.swing.GroupLayout.PREFERRED_SIZE, 65, javax.swing.GroupLayout.PREFERRED_SIZE)
+                            .addComponent(barrierBtn))
+                        .addGap(18, 18, 18)
+                        .addGroup(layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
+                            .addComponent(simulationBtn)
+                            .addComponent(revertBtn, javax.swing.GroupLayout.PREFERRED_SIZE, 81, javax.swing.GroupLayout.PREFERRED_SIZE))
+                        .addGap(18, 18, 18)
+                        .addComponent(interruptBtn)
+                        .addGap(0, 282, Short.MAX_VALUE)))
+                .addContainerGap())
         );
         layout.setVerticalGroup(
             layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
             .addGroup(layout.createSequentialGroup()
-                .addContainerGap(329, Short.MAX_VALUE)
+                .addContainerGap()
+                .addComponent(jPanel1, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE)
+                .addGap(18, 18, 18)
                 .addGroup(layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
                     .addGroup(javax.swing.GroupLayout.Alignment.TRAILING, layout.createSequentialGroup()
                         .addGroup(layout.createParallelGroup(javax.swing.GroupLayout.Alignment.BASELINE)
@@ -117,6 +180,18 @@ public class MainGUI extends javax.swing.JFrame {
     private void SpeedTxFActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_SpeedTxFActionPerformed
         // TODO add your handling code here:
     }//GEN-LAST:event_SpeedTxFActionPerformed
+
+    private void createBtnActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_createBtnActionPerformed
+        // TODO add your handling code here:
+        int FigureQty = Integer.parseInt(valueTxF.getText());
+        try {
+            paramGenerator(FigureQty, SpeedEnum.values()[Integer.parseInt(SpeedTxF.getText())]);
+        } catch (IOException ex) {
+            Logger.getLogger(MainGUI.class.getName()).log(Level.SEVERE, null, ex);
+        } catch (InterruptedException ex) {
+            Logger.getLogger(MainGUI.class.getName()).log(Level.SEVERE, null, ex);
+        }
+    }//GEN-LAST:event_createBtnActionPerformed
 
     /**
      * @param args the command line arguments
@@ -148,16 +223,116 @@ public class MainGUI extends javax.swing.JFrame {
         /* Create and display the form */
         java.awt.EventQueue.invokeLater(new Runnable() {
             public void run() {
-                new MainGUI().setVisible(true);
+                MainGUI main = new MainGUI();
+                main.setVisible(true);
+                new Thread(main).start();
             }
         });
     }
+    
+    @Override
+    public void run() {
+        
+        try {
+            //START THREADS//end for
+            paramGenerator(8, SpeedEnum.Slow);
+        } catch (IOException ex) {
+            Logger.getLogger(MainGUI.class.getName()).log(Level.SEVERE, null, ex);
+        } catch (InterruptedException ex) {
+            Logger.getLogger(MainGUI.class.getName()).log(Level.SEVERE, null, ex);
+        }
+        panelRepaint = new PanelRepaint(this, this.sleepTimePaint, this.runningThread);
+        new Thread(panelRepaint).start();
+        
+    }
+    
+    public void repaintMovingPanel() {
+        jPanel1.repaint();
+    }
+    
+    public ArrayList<Road> getRoadObjectArray() {
+        return roadObjectArray;
+    }
+
+    public void setRoadObjectArray(ArrayList<Road> roadObjectArray) {
+        this.roadObjectArray = roadObjectArray;
+    }
+    
+    public boolean isRunningThread() {
+        return runningThread;
+    }
+
+    public void setRunningThread(boolean runningThread) {
+        this.runningThread = runningThread;
+    }
+    
+    public void paramGenerator(int figureQty, SpeedEnum speedSelection) throws IOException, InterruptedException{
+        int figureFlag = 0;
+        int freeRoadPos = 0;
+        
+        
+        while(figureFlag<figureQty){
+            freeRoadPos = selectRoad(this.getRoadObjectArray());
+            float roadXPos = this.getRoadObjectArray().get(freeRoadPos).getxPosition();
+            float roadYPos = this.getRoadObjectArray().get(freeRoadPos).getyPosition();
+            float roadHeight = this.getRoadObjectArray().get(freeRoadPos).getHeight();
+            
+
+            ThreadFigure tf = new ThreadFigure(roadXPos, roadYPos, speedSelection, roadHeight,roadHeight/2);
+
+            MoveThreadFigure newMoveThread = new MoveThreadFigure(tf, speedSelection, true, currentDirection, currentBarrier);
+            this.roadObjectArray.get(freeRoadPos).getFigureList().add(newMoveThread);
+            new Thread(newMoveThread).start();
+            figureFlag++;            
+        }
+    }
+
+
+    public void randomGenerator(int figureQty) throws IOException{
+        int figureFlag = 0;
+        int freeRoadPos = 0;
+        
+        
+        while(figureFlag<figureQty){
+            freeRoadPos = selectRoad(this.getRoadObjectArray());
+            float roadXPos = this.getRoadObjectArray().get(freeRoadPos).getxPosition();
+            float roadYPos = this.getRoadObjectArray().get(freeRoadPos).getyPosition();
+            float roadHeight = this.getRoadObjectArray().get(freeRoadPos).getHeight();
+            
+            ThreadFigure tf = new ThreadFigure(roadXPos, roadYPos, SpeedEnum.getRandomSpeed(), roadHeight,roadHeight/2);
+            MoveThreadFigure newMoveThread = new MoveThreadFigure(tf, tf.getSpeed(), true, currentDirection, currentBarrier);
+            this.getRoadObjectArray().get(freeRoadPos).getFigureList().add(newMoveThread);
+            
+        }}
+    
+    public void startAllThreads(){
+        roadObjectArray.forEach((currentRoad) -> {
+            if(!currentRoad.isRunning()){
+                new Thread(currentRoad).start();
+            }                
+        });
+
+    }
+    
+    public int selectRoad(ArrayList<Road> roads){
+        Road freeRoad = roads.get(0);
+        int freeRoadPos = 0;
+        for (Road road : roads) {
+            if(road.getFigureList().size()<freeRoad.getFigureList().size()){
+                freeRoad = road;
+                freeRoadPos=roads.indexOf(freeRoad);
+            }
+        }
+        return freeRoadPos;
+    }
+    
 
     // Variables declaration - do not modify//GEN-BEGIN:variables
     private javax.swing.JTextField SpeedTxF;
     private javax.swing.JButton barrierBtn;
     private javax.swing.JButton createBtn;
     private javax.swing.JToggleButton interruptBtn;
+    private javax.swing.JPanel jPanel1;
     private javax.swing.JButton revertBtn;
     private javax.swing.JTextField roadTxF;
     private javax.swing.JButton simulationBtn;
