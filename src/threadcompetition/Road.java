@@ -44,11 +44,33 @@ public class Road implements Runnable{
     @Override
     public void run (){
         this.running = true;
+        MoveThreadFigure currentMove = null;
+        MoveThreadFigure prevMove = null;
+        ThreadFigure currentCar = null;
+        ThreadFigure prevCar = null;
         while(running){
             Iterator<MoveThreadFigure> index = this.figureList.iterator();
             while (index.hasNext()) {
                 try {
-                    MoveThreadFigure currentMove = index.next();
+                    prevMove = currentMove;
+                    currentMove = index.next();
+                    currentCar = currentMove.getMyObject();
+                    if(direction == 1){
+                        if(prevMove != null && prevMove != currentMove){
+                            prevCar = prevMove.getMyObject();
+                            if(currentCar.getyPosition()+currentCar.getHeight() >= prevCar.getHeight() ){
+                                currentMove.setSleepTime(prevMove.getSleepTime());
+                            }
+                        }
+                    }
+                    else{
+                        if(prevMove != null && prevMove != currentMove){
+                            prevCar = prevMove.getMyObject();
+                            if(prevCar.getyPosition()-prevCar.getHeight() <= currentCar.getHeight() ){
+                                prevCar.setSpeed(currentCar.getSpeed());
+                            }
+                        }
+                    }
                     if(!currentMove.getRunning()){
                         cleanFigures();
                     }
