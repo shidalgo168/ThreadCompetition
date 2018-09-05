@@ -48,11 +48,11 @@ public class Road implements Runnable{
             while (index.hasNext()) {
                 try {
                     MoveThreadFigure currentMove = index.next();
-                    Thread.sleep(currentMove.getSleepTime());
                     if(!currentMove.getRunning()){
                        cleanFigures();
                     }
                     repaintJPanel();
+                    Thread.sleep(currentMove.getSleepTime());
                 } catch (InterruptedException ex) {
                     Logger.getLogger(MainGUI.class.getName()).log(Level.SEVERE, null, ex);
                 }

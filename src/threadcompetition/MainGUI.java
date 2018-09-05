@@ -34,7 +34,7 @@ public class MainGUI extends javax.swing.JFrame implements Runnable{
      */
     public MainGUI() {
         this.sleepThreadTime = 10;
-        this.sleepTimePaint = 20;
+        this.sleepTimePaint = 1;
         this.currentDirection = 1;
         this.currentBarrier = false;
         this.runningThread = true;
@@ -206,14 +206,16 @@ public class MainGUI extends javax.swing.JFrame implements Runnable{
         /* Create and display the form */
         java.awt.EventQueue.invokeLater(new Runnable() {
             public void run() {
-                new MainGUI().setVisible(true);
+                MainGUI main = new MainGUI();
+                main.setVisible(true);
+                new Thread(main).start();
             }
         });
     }
     
     @Override
     public void run() {
-
+        
         try {
             //START THREADS//end for
             paramGenerator(8, SpeedEnum.Slow);
@@ -261,8 +263,9 @@ public class MainGUI extends javax.swing.JFrame implements Runnable{
 
             ThreadFigure tf = new ThreadFigure(roadXPos, roadYPos, speedSelection, roadHeight,roadHeight/2);
 
-            MoveThreadFigure newMoveThread = new MoveThreadFigure(tf, speedSelection, false, currentDirection, currentBarrier);
+            MoveThreadFigure newMoveThread = new MoveThreadFigure(tf, speedSelection, true, currentDirection, currentBarrier);
             this.roadObjectArray.get(freeRoadPos).getFigureList().add(newMoveThread);
+            new Thread(newMoveThread).start();
             figureFlag++;            
         }
     }
