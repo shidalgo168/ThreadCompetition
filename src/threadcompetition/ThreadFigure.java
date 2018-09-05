@@ -115,6 +115,7 @@ public class ThreadFigure extends Thread{
     }
     
     
+    
 
     public boolean move(int direction) {
         float limit;
@@ -135,6 +136,10 @@ public class ThreadFigure extends Thread{
         }
         return true;
     }
+    
+        public boolean move() {
+            return true;
+        }
     
     public boolean move(int direction, boolean barrier){
         float limit;

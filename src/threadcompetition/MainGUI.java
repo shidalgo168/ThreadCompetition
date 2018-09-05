@@ -123,6 +123,11 @@ public class MainGUI extends javax.swing.JFrame implements Runnable{
 
         interruptBtn.setBackground(new java.awt.Color(255, 153, 0));
         interruptBtn.setText("Interrupt");
+        interruptBtn.addActionListener(new java.awt.event.ActionListener() {
+            public void actionPerformed(java.awt.event.ActionEvent evt) {
+                interruptBtnActionPerformed(evt);
+            }
+        });
 
         javax.swing.GroupLayout jPanel1Layout = new javax.swing.GroupLayout(jPanel1);
         jPanel1.setLayout(jPanel1Layout);
@@ -238,6 +243,15 @@ public class MainGUI extends javax.swing.JFrame implements Runnable{
             Logger.getLogger(MainGUI.class.getName()).log(Level.SEVERE, null, ex);
         }
     }//GEN-LAST:event_simulationBtnActionPerformed
+
+    private void interruptBtnActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_interruptBtnActionPerformed
+        // TODO add your handling code here:
+        for(Road road : roadObjectArray){
+            for(MoveThreadFigure movethreadfigure : road.getFigureList()){
+                movethreadfigure.switchPause();
+            }
+        }
+    }//GEN-LAST:event_interruptBtnActionPerformed
 
 
     /**
