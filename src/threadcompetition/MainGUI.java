@@ -80,17 +80,22 @@ public class MainGUI extends javax.swing.JFrame implements Runnable{
         setDefaultCloseOperation(javax.swing.WindowConstants.EXIT_ON_CLOSE);
         setTitle("Thread Race");
 
-        SpeedTxF.setText("jTextField1");
+        SpeedTxF.setText("Speed");
         SpeedTxF.addActionListener(new java.awt.event.ActionListener() {
             public void actionPerformed(java.awt.event.ActionEvent evt) {
                 SpeedTxFActionPerformed(evt);
             }
         });
 
-        valueTxF.setText("jTextField1");
+        valueTxF.setText("Quantity");
 
         createBtn.setBackground(new java.awt.Color(102, 102, 255));
         createBtn.setText("Create");
+        createBtn.addActionListener(new java.awt.event.ActionListener() {
+            public void actionPerformed(java.awt.event.ActionEvent evt) {
+                createBtnActionPerformed(evt);
+            }
+        });
 
         barrierBtn.setBackground(new java.awt.Color(102, 102, 255));
         barrierBtn.setText("Barrier");
@@ -142,7 +147,7 @@ public class MainGUI extends javax.swing.JFrame implements Runnable{
                             .addComponent(revertBtn, javax.swing.GroupLayout.PREFERRED_SIZE, 81, javax.swing.GroupLayout.PREFERRED_SIZE))
                         .addGap(18, 18, 18)
                         .addComponent(interruptBtn)
-                        .addGap(0, 248, Short.MAX_VALUE)))
+                        .addGap(0, 282, Short.MAX_VALUE)))
                 .addContainerGap())
         );
         layout.setVerticalGroup(
@@ -175,6 +180,18 @@ public class MainGUI extends javax.swing.JFrame implements Runnable{
     private void SpeedTxFActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_SpeedTxFActionPerformed
         // TODO add your handling code here:
     }//GEN-LAST:event_SpeedTxFActionPerformed
+
+    private void createBtnActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_createBtnActionPerformed
+        // TODO add your handling code here:
+        int FigureQty = Integer.parseInt(valueTxF.getText());
+        try {
+            paramGenerator(FigureQty, SpeedEnum.values()[Integer.parseInt(SpeedTxF.getText())]);
+        } catch (IOException ex) {
+            Logger.getLogger(MainGUI.class.getName()).log(Level.SEVERE, null, ex);
+        } catch (InterruptedException ex) {
+            Logger.getLogger(MainGUI.class.getName()).log(Level.SEVERE, null, ex);
+        }
+    }//GEN-LAST:event_createBtnActionPerformed
 
     /**
      * @param args the command line arguments
