@@ -121,8 +121,8 @@ public class Road implements Runnable{
         return barrier;
     }
 
-    public void setBarrier(boolean barrier) {
-        this.barrier = barrier;
+    public void switchBarrier() {
+        this.barrier = !this.barrier;
     }
 
     public ArrayList<MoveThreadFigure> getFigureList() {
@@ -184,12 +184,16 @@ public class Road implements Runnable{
         g.fillRect((int)xPosition, (int)yPosition,(int) width,(int) height);
         g.setColor(new Color(33,33,33));
         g.fillRect((int)xPosition+3, (int)yPosition+3,(int) width-4,(int) height-3);
-            Iterator<MoveThreadFigure> index = this.figureList.iterator();
-            while (index.hasNext()) {
-                MoveThreadFigure figure = index.next(); // must be called before you can call i.remove()
-                // Do something
-                figure.getMyObject().draw(g);
-            }
+        Iterator<MoveThreadFigure> index = this.figureList.iterator();
+        while (index.hasNext()) {
+            MoveThreadFigure figure = index.next(); // must be called before you can call i.remove()
+            // Do something
+            figure.getMyObject().draw(g);
+        }
+        if(barrier){
+            g.setColor(new Color(255,233,18));
+            g.fillRect((int)xPosition+3, (int)height/2-10,(int) width-3,10);
+        }
     }
     
     public void cleanFigures(){

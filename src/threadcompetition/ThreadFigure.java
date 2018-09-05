@@ -121,8 +121,7 @@ public class ThreadFigure extends Thread{
         yPosition += (height * direction);
         
         if(direction == 1){
-            limit = finishLimit - height;
-            if(yPosition > limit){
+            if(yPosition > finishLimit){
                 //La figura llego al final del camino
                 return false;
             }
@@ -142,7 +141,7 @@ public class ThreadFigure extends Thread{
             limit = barrierLimit - height;
             if(yPosition > limit){ //la figura se encuentra despues de la barrera
                 yPosition += height;
-                limit = finishLimit - height;
+                limit = finishLimit;
                 if(yPosition > limit){
                     //La figura llego al final del camino
                     return false;
@@ -180,22 +179,22 @@ public class ThreadFigure extends Thread{
             }
         }*/
         if(useImage){
-            g.drawImage(image,(int) xPosition,(int) yPosition, null);
+            g.drawImage(image,(int) xPosition+8,(int) yPosition, null);
         }
         else {
             switch(speed.getValue()){
                 case (1): 
                     g.setColor(new Color(40,40,255));
                     
-                    g.fillArc((int) xPosition,(int) yPosition, width, height, 90, 180);
+                    g.fillArc((int) xPosition+8,(int) yPosition, width, height, 90, 180);
                     break;
                 case (2):
                     g.setColor(new Color(255,40,40));
-                    g.fillOval((int) xPosition,(int) yPosition, width, height);
+                    g.fillOval((int) xPosition+8,(int) yPosition, width, height);
                     break;
                 case (3): 
                     g.setColor(new Color(40,255,40));
-                    g.fillRect((int) xPosition,(int) yPosition, width, height);
+                    g.fillRect((int) xPosition+8,(int) yPosition, width, height);
                     break;
             }
         }
