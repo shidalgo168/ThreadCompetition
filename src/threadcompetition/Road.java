@@ -48,18 +48,8 @@ public class Road implements Runnable{
             while (index.hasNext()) {
                 try {
                     MoveThreadFigure currentMove = index.next();
-<<<<<<< HEAD
-                    Thread.sleep(currentMove.getSleepTime());
-                    if(!currentMove.getRunning() && currentMove.getMyObject() != null){
-                        new Thread(currentMove).start();
-                        currentMove.setRunning(true);
-                    }
-                    else if(!currentMove.getRunning() || currentMove.getMyObject() == null){
-                       index.remove();
-=======
                     if(!currentMove.getRunning()){
                        cleanFigures();
->>>>>>> dev
                     }
                     repaintJPanel();
                     Thread.sleep(currentMove.getSleepTime());
@@ -154,17 +144,40 @@ public class Road implements Runnable{
     
     
     
-    public void reversePath(){
-        if(this.direction == 1){
+    public void reversePath() {
+        if (this.direction == 1) {
             setDirection(-1);
             figureList.forEach((currentFigure) -> {
                 currentFigure.getMyObject().setFinishLimit(0);
+                currentFigure.setDirection(-1);
+                switch (currentFigure.getMyObject().getSpeed().getValue()) {
+                    case (1):
+                        currentFigure.getMyObject().setImage(currentFigure.getMyObject().getSprite().get(3));
+                        break;
+                    case (2):
+                        currentFigure.getMyObject().setImage(currentFigure.getMyObject().getSprite().get(4));
+                        break;
+                    case (3):
+                        currentFigure.getMyObject().setImage(currentFigure.getMyObject().getSprite().get(5));
+                        break;
+                }
             });
-        }
-        else {
+        } else {
             setDirection(1);
             figureList.forEach((currentFigure) -> {
                 currentFigure.getMyObject().setFinishLimit(height);
+                currentFigure.setDirection(1);
+                switch (currentFigure.getMyObject().getSpeed().getValue()) {
+                    case (1):
+                        currentFigure.getMyObject().setImage(currentFigure.getMyObject().getSprite().get(0));
+                        break;
+                    case (2):
+                        currentFigure.getMyObject().setImage(currentFigure.getMyObject().getSprite().get(1));
+                        break;
+                    case (3):
+                        currentFigure.getMyObject().setImage(currentFigure.getMyObject().getSprite().get(2));
+                        break;
+                }
             });
         }
     }
@@ -185,29 +198,10 @@ public class Road implements Runnable{
     public void cleanFigures(){
         Iterator<MoveThreadFigure> index = this.figureList.iterator();
         while (index.hasNext()) {
-            cleanFigures();
             MoveThreadFigure figure = index.next(); // must be called before you can call i.remove()
             // Do something
-<<<<<<< HEAD
-            System.out.println("debug: "+ figure.toString());
-            figure.getMyObject().draw(g);
-        }
-    }
-    
-    public void cleanFigures(){
-        int arrayIndex = 0;
-        int newArraySize = figureList.size();
-        while(arrayIndex < newArraySize){
-            if(figureList.get(arrayIndex).getMyObject() == null){ //Como se que termino 
-                this.figureList.remove(figureList.get(arrayIndex));
-                newArraySize--;
-            }
-            else {
-                arrayIndex++;
-=======
             if(figure.getMyObject()==null){
                 index.remove();
->>>>>>> dev
             }
         }
     }
