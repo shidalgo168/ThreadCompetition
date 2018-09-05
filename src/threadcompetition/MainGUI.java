@@ -17,9 +17,9 @@ import java.util.logging.Logger;
  * @author Elias
  */
 public class MainGUI extends javax.swing.JFrame implements Runnable{
-    private static final int DRAWING_WIDTH = 350;
+    private static final int DRAWING_WIDTH = 610;
     private static final int ROADS_COUNT = 5;
-    private static final int ROAD_WIDTH = 30;
+    private static final int ROAD_WIDTH = 40;
     private boolean runningThread;
     
     private ArrayList<Road> roadObjectArray = new ArrayList<>();
@@ -39,7 +39,7 @@ public class MainGUI extends javax.swing.JFrame implements Runnable{
         this.currentDirection = 1;
         this.currentBarrier = false;
         this.runningThread = true;
-        toggleImage = true;
+        this.toggleImage = true;
         
         for (int i = 0; i < ROADS_COUNT; i++) {
            roadObjectArray.add( new Road(this, ROAD_WIDTH*i, 10, ROAD_WIDTH, DRAWING_WIDTH));
@@ -102,6 +102,11 @@ public class MainGUI extends javax.swing.JFrame implements Runnable{
 
         barrierBtn.setBackground(new java.awt.Color(102, 102, 255));
         barrierBtn.setText("Barrier");
+        barrierBtn.addActionListener(new java.awt.event.ActionListener() {
+            public void actionPerformed(java.awt.event.ActionEvent evt) {
+                barrierBtnActionPerformed(evt);
+            }
+        });
 
         revertBtn.setBackground(new java.awt.Color(102, 102, 255));
         revertBtn.setText("Revert");
@@ -127,7 +132,7 @@ public class MainGUI extends javax.swing.JFrame implements Runnable{
         );
         jPanel1Layout.setVerticalGroup(
             jPanel1Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
-            .addGap(0, 355, Short.MAX_VALUE)
+            .addGap(0, 620, Short.MAX_VALUE)
         );
 
         figureToggle.setText("Figure/Image");
@@ -164,7 +169,7 @@ public class MainGUI extends javax.swing.JFrame implements Runnable{
                         .addComponent(interruptBtn)
                         .addGap(31, 31, 31)
                         .addComponent(figureToggle)
-                        .addGap(0, 142, Short.MAX_VALUE)))
+                        .addGap(0, 522, Short.MAX_VALUE)))
                 .addContainerGap())
         );
         layout.setVerticalGroup(
@@ -224,6 +229,12 @@ public class MainGUI extends javax.swing.JFrame implements Runnable{
             road.reversePath();
         }
     }//GEN-LAST:event_revertBtnActionPerformed
+
+    private void barrierBtnActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_barrierBtnActionPerformed
+        // TODO add your handling code here:
+        currentBarrier = !currentBarrier;
+        barrierToggle();
+    }//GEN-LAST:event_barrierBtnActionPerformed
 
 
     /**
@@ -361,6 +372,15 @@ public class MainGUI extends javax.swing.JFrame implements Runnable{
         roadObjectArray.forEach((currentRoad) -> {
             currentRoad.getFigureList().forEach((figure) -> {
                 figure.getMyObject().switchUseImage();
+            });
+        });
+    }
+    
+    public void barrierToggle(){
+        roadObjectArray.forEach((currentRoad) -> {
+            currentRoad.switchBarrier();
+            currentRoad.getFigureList().forEach((figure) -> {
+                figure.switchBarrier();
             });
         });
     }

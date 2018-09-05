@@ -42,9 +42,7 @@ public class MoveThreadFigure implements Runnable{
 
     @Override
     public void run() {
-        while(this.running){
-            this.myObject.move(this.direction);
-            
+        while(this.running){            
             try {
                 //System.out.println("Thread name: " + this.name);
                 Thread.sleep(this.sleepTime);
@@ -106,8 +104,8 @@ public class MoveThreadFigure implements Runnable{
         return barrier;
     }
 
-    public void setBarrier(boolean barrier) {
-        this.barrier = barrier;
+    public void switchBarrier() {
+        this.barrier = !this.barrier;
     }
 
     @Override
