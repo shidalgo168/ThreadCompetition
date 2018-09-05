@@ -128,6 +128,11 @@ public class MainGUI extends javax.swing.JFrame implements Runnable{
 
         interruptBtn.setBackground(new java.awt.Color(255, 153, 0));
         interruptBtn.setText("Interrupt");
+        interruptBtn.addActionListener(new java.awt.event.ActionListener() {
+            public void actionPerformed(java.awt.event.ActionEvent evt) {
+                interruptBtnActionPerformed(evt);
+            }
+        });
 
         javax.swing.GroupLayout jPanel1Layout = new javax.swing.GroupLayout(jPanel1);
         jPanel1.setLayout(jPanel1Layout);
@@ -245,11 +250,22 @@ public class MainGUI extends javax.swing.JFrame implements Runnable{
         }
     }//GEN-LAST:event_simulationBtnActionPerformed
 
+
     private void barrierBtnActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_barrierBtnActionPerformed
         // TODO add your handling code here:
         currentBarrier = !currentBarrier;
         barrierToggle();
     }//GEN-LAST:event_barrierBtnActionPerformed
+
+
+    private void interruptBtnActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_interruptBtnActionPerformed
+        // TODO add your handling code here:
+        for(Road road : roadObjectArray){
+            for(MoveThreadFigure movethreadfigure : road.getFigureList()){
+                movethreadfigure.switchPause();
+            }
+        }
+    }//GEN-LAST:event_interruptBtnActionPerformed
 
 
 
