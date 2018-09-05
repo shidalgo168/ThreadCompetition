@@ -39,6 +39,9 @@ public class ThreadFigure extends Thread{
         this.sprite.add(ImageIO.read(getClass().getResource("/Assets/blue_car.jpg")));
         this.sprite.add(ImageIO.read(getClass().getResource("/Assets/red_car.jpg")));
         this.sprite.add(ImageIO.read(getClass().getResource("/Assets/green_car.jpg")));
+        this.sprite.add(ImageIO.read(getClass().getResource("/Assets/blue_car_invert.jpg")));
+        this.sprite.add(ImageIO.read(getClass().getResource("/Assets/red_car_invert.jpg")));
+        this.sprite.add(ImageIO.read(getClass().getResource("/Assets/green_car_invert.jpg")));
         switch(speed.getValue()){
             case (1): 
                 this.image = sprite.get(0);
@@ -52,6 +55,15 @@ public class ThreadFigure extends Thread{
         }
         this.useImage = true;
     }
+
+    public ArrayList<Image> getSprite() {
+        return sprite;
+    }
+
+    public void setSprite(ArrayList<Image> sprite) {
+        this.sprite = sprite;
+    }
+    
     
     public SpeedEnum getSpeed() {
         return speed;

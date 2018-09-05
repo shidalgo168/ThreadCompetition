@@ -103,6 +103,11 @@ public class MainGUI extends javax.swing.JFrame implements Runnable{
 
         revertBtn.setBackground(new java.awt.Color(102, 102, 255));
         revertBtn.setText("Revert");
+        revertBtn.addActionListener(new java.awt.event.ActionListener() {
+            public void actionPerformed(java.awt.event.ActionEvent evt) {
+                revertBtnActionPerformed(evt);
+            }
+        });
 
         roadTxF.setText("jTextField1");
 
@@ -205,9 +210,18 @@ public class MainGUI extends javax.swing.JFrame implements Runnable{
         }
     }//GEN-LAST:event_createBtnActionPerformed
 
+
     private void figureToggleActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_figureToggleActionPerformed
         // TODO add your handling code here:
     }//GEN-LAST:event_figureToggleActionPerformed
+
+    private void revertBtnActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_revertBtnActionPerformed
+        // TODO add your handling code here:
+        for(Road road : roadObjectArray){
+            road.reversePath();
+        }
+    }//GEN-LAST:event_revertBtnActionPerformed
+
 
     /**
      * @param args the command line arguments

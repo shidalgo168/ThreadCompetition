@@ -109,6 +109,13 @@ public class MoveThreadFigure implements Runnable{
     public void setBarrier(boolean barrier) {
         this.barrier = barrier;
     }
+
+    @Override
+    public String toString() {
+        return "MoveThreadFigure{" + "running=" + running + ", myObject=" + myObject + ", sleepTime=" + sleepTime + ", direction=" + direction + ", barrier=" + barrier + '}';
+    }
+    
+    
     
     
 }

@@ -141,18 +141,40 @@ public class Road implements Runnable{
         this.running = running;
     }
     
-    
-    public void reversePath(){
-        if(this.direction == 1){
+    public void reversePath() {
+        if (this.direction == 1) {
             setDirection(-1);
             figureList.forEach((currentFigure) -> {
                 currentFigure.getMyObject().setFinishLimit(0);
+                currentFigure.setDirection(-1);
+                switch (currentFigure.getMyObject().getSpeed().getValue()) {
+                    case (1):
+                        currentFigure.getMyObject().setImage(currentFigure.getMyObject().getSprite().get(3));
+                        break;
+                    case (2):
+                        currentFigure.getMyObject().setImage(currentFigure.getMyObject().getSprite().get(4));
+                        break;
+                    case (3):
+                        currentFigure.getMyObject().setImage(currentFigure.getMyObject().getSprite().get(5));
+                        break;
+                }
             });
-        }
-        else {
+        } else {
             setDirection(1);
             figureList.forEach((currentFigure) -> {
                 currentFigure.getMyObject().setFinishLimit(height);
+                currentFigure.setDirection(1);
+                switch (currentFigure.getMyObject().getSpeed().getValue()) {
+                    case (1):
+                        currentFigure.getMyObject().setImage(currentFigure.getMyObject().getSprite().get(0));
+                        break;
+                    case (2):
+                        currentFigure.getMyObject().setImage(currentFigure.getMyObject().getSprite().get(1));
+                        break;
+                    case (3):
+                        currentFigure.getMyObject().setImage(currentFigure.getMyObject().getSprite().get(2));
+                        break;
+                }
             });
         }
     }
