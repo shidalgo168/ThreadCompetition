@@ -29,6 +29,7 @@ public class MainGUI extends javax.swing.JFrame implements Runnable{
     private int sleepThreadTime;
     private int sleepTimePaint;
     private boolean toggleImage;
+    private boolean simulationFlag;
 
     /**
      * Creates new form MainGUI
@@ -40,6 +41,7 @@ public class MainGUI extends javax.swing.JFrame implements Runnable{
         this.currentBarrier = false;
         this.runningThread = true;
         this.toggleImage = true;
+        this.simulationFlag = false;
         
         for (int i = 0; i < ROADS_COUNT; i++) {
            roadObjectArray.add( new Road(this, ROAD_WIDTH*i, 10, ROAD_WIDTH, DRAWING_WIDTH));
@@ -253,12 +255,21 @@ public class MainGUI extends javax.swing.JFrame implements Runnable{
 
 
     private void simulationBtnActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_simulationBtnActionPerformed
-        try {
-            // TODO add your handling code here:
-            randomGenerator();
-        } catch (IOException ex) {
-            Logger.getLogger(MainGUI.class.getName()).log(Level.SEVERE, null, ex);
-        }
+        simulationFlag = !simulationFlag;
+        new Thread() {
+            public void run() {
+                while (simulationFlag) {
+                    try {
+                        randomGenerator();
+                        Thread.sleep((long) Math.random() % 2000 + 1000);
+                    } catch (InterruptedException ex) {
+                        Logger.getLogger(MainGUI.class.getName()).log(Level.SEVERE, null, ex);
+                    } catch (IOException ex) {
+                        Logger.getLogger(MainGUI.class.getName()).log(Level.SEVERE, null, ex);
+                    }
+                }
+            }
+        }.start();
     }//GEN-LAST:event_simulationBtnActionPerformed
 
 
